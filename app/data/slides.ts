@@ -3,6 +3,22 @@ export type ButtonConfig = {
   position?: "left" | "right";
 };
 
+export type DecorationConfig = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  className?: string;
+};
+
+export type OverlayConfig = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  className?: string;
+};
+
 export type Slide = {
   id: string;
   kicker?: string;
@@ -12,6 +28,11 @@ export type Slide = {
   accent?: string;
   backButton?: ButtonConfig;
   nextButton?: ButtonConfig;
+  decorations?: {
+    left?: DecorationConfig;
+    right?: DecorationConfig;
+  };
+  overlays?: OverlayConfig[];
 };
 
 export const slides: Slide[] = [
@@ -22,8 +43,34 @@ export const slides: Slide[] = [
     body: "",
     stats: [""],
     accent: "#ff6f59",
-    backButton: undefined,
+    backButton: { text: "DISCOVER A.I." },
     nextButton: { text: "TAKE TEST" },
+    decorations: {
+      left: {
+        src: "/left-rect.svg",
+        alt: "left decoration",
+        width: 301,
+        height: 301,
+        className: "absolute left-0 top-1/2 -translate-y-[calc(50%+293px)]",
+      },
+      right: {
+        src: "/right-rect.svg",
+        alt: "right decoration",
+        width: 301,
+        height: 301,
+        className: "absolute right-0 top-1/2 -translate-y-[calc(50%+293px)]",
+      },
+    },
+    overlays: [
+      {
+        src: "/coursor.svg",
+        alt: "coursor",
+        width: 143,
+        height: 122,
+        className:
+          "absolute left-1/2 top-[70%] z-40 -translate-x-1/2 -translate-y-1/2 translate-x-[220px] opacity-50",
+      },
+    ],
   },
   {
     id: "story",
@@ -35,6 +82,22 @@ export const slides: Slide[] = [
     accent: "#2f80ed",
     backButton: { text: "DISCOVER A.I." },
     nextButton: { text: "TAKE TEST" },
+    decorations: {
+      left: {
+        src: "/left-rect.svg",
+        alt: "left decoration",
+        width: 64,
+        height: 64,
+        className: "absolute left-0",
+      },
+      right: {
+        src: "/right-rect.svg",
+        alt: "right decoration",
+        width: 64,
+        height: 64,
+        className: "absolute right-0",
+      },
+    },
   },
   {
     id: "next",
@@ -46,5 +109,21 @@ export const slides: Slide[] = [
     accent: "#2d9cdb",
     backButton: { text: "DISCOVER A.I." },
     nextButton: undefined,
+    decorations: {
+      left: {
+        src: "/left-rect.svg",
+        alt: "left decoration",
+        width: 64,
+        height: 64,
+        className: "absolute left-0",
+      },
+      right: {
+        src: "/right-rect.svg",
+        alt: "right decoration",
+        width: 64,
+        height: 64,
+        className: "absolute right-0",
+      },
+    },
   },
 ];

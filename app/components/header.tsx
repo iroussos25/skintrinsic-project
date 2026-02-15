@@ -1,6 +1,6 @@
 export default function Header() {
 	return (
-    <header className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 bg-white px-6 py-5">
+    <header className="flex flex-wrap items-center justify-between gap-4 bg-white px-8 py-5">
       <div className="flex items-center gap-3">
       
         <div>

@@ -14,11 +14,22 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-white text-[#1A1B1C]">
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col">
+      <div className="relative z-10 flex min-h-screen w-full flex-col">
         <Header />
 
+        {slide.overlays?.map((overlay) => (
+          <Image
+            key={`${overlay.src}-${overlay.alt}`}
+            src={overlay.src}
+            alt={overlay.alt}
+            width={overlay.width}
+            height={overlay.height}
+            className={overlay.className}
+          />
+        ))}
+
         {slide.backButton && (
-          <div className="absolute left-6 top-1/2 z-20 flex -translate-y-1/2 items-center gap-4 transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40">
+          <div className="absolute left-8 top-1/2 z-30 flex -translate-y-1/2 items-center gap-4 transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40">
             <button
               onClick={() => setActiveIndex((index) => Math.max(0, index - 1))}
               disabled={isFirst}
@@ -31,7 +42,7 @@ export default function Home() {
         )}
 
         {slide.nextButton && (
-          <div className="absolute right-6 top-1/2 z-20 flex -translate-y-1/2 items-center gap-4 transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40">
+          <div className="absolute right-8 top-1/2 z-30 flex -translate-y-1/2 items-center gap-4 transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40">
             <span className="font-semibold text-[#1A1B1C]" style={{ fontSize: "14px" }}>{slide.nextButton.text}</span>
             <button
               onClick={() =>
@@ -47,7 +58,7 @@ export default function Home() {
           </div>
         )}
 
-        <main className="flex flex-1 items-center justify-center px-6 pb-8">
+        <main className="flex flex-1 items-center justify-center px-0 pb-8">
           <div key={slide.id} className="animate-slide-reveal w-full text-center">
             <p className="mb-12 text-sm uppercase tracking-[0.35em] text-neutral-600">
               {slide.kicker}
@@ -72,9 +83,25 @@ export default function Home() {
           </div>
         </main>
 
-        <div className="relative flex items-center justify-between px-6 pb-8">
-          <Image src="/left-rect.svg" alt="decoration" width={64} height={64} className="absolute left-0" />
-          <Image src="/right-rect.svg" alt="decoration" width={64} height={64} className="absolute right-0" />
+        <div className="relative flex items-center justify-between pb-8">
+          {slide.decorations?.left && (
+            <Image
+              src={slide.decorations.left.src}
+              alt={slide.decorations.left.alt}
+              width={slide.decorations.left.width}
+              height={slide.decorations.left.height}
+              className={slide.decorations.left.className}
+            />
+          )}
+          {slide.decorations?.right && (
+            <Image
+              src={slide.decorations.right.src}
+              alt={slide.decorations.right.alt}
+              width={slide.decorations.right.width}
+              height={slide.decorations.right.height}
+              className={slide.decorations.right.className}
+            />
+          )}
         </div>
 
         <Footer current={activeIndex + 1} total={slides.length} />
