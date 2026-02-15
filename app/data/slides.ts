@@ -27,13 +27,19 @@ export type Slide = {
   stats?: string[];
   accent?: string;
   textAlign?: "left" | "center";
+  kickerPosition?: "default" | "top-left" | "top-right";
+  kickerStyle?: React.CSSProperties;
+  titleStyle?: React.CSSProperties;
+  bodyStyle?: React.CSSProperties;
   backButton?: ButtonConfig;
   nextButton?: ButtonConfig;
   decorations?: {
     left?: DecorationConfig;
     right?: DecorationConfig;
   };
+  decorationsLayer?: "content" | "screen";
   overlays?: OverlayConfig[];
+  footerContent?: "text" | "button" | "both" | "none";
 };
 
 export const slides: Slide[] = [
@@ -47,6 +53,7 @@ export const slides: Slide[] = [
     textAlign: "center",
     backButton: { text: "DISCOVER A.I." },
     nextButton: { text: "TAKE TEST" },
+    footerContent: "text",
     decorations: {
       left: {
         src: "/left-rect.svg",
@@ -84,6 +91,7 @@ export const slides: Slide[] = [
     textAlign: "left",
     backButton: undefined,
     nextButton: { text: "TAKE TEST" },
+    footerContent: "text",
     decorations: {
       right: {
         src: "/rombuses.svg",
@@ -96,28 +104,135 @@ export const slides: Slide[] = [
   },
   {
     id: "002",
-    kicker: "Execution",
-    title: "Easy to extend and reorder",
+    kicker: "TO START ANALYSIS",
+    title: "CLICK TO TYPE",
     body:
-      "Adding a slide is just adding data. The deck can scale to new sections without duplicating layout code or design tokens.",
+      "Introduce Yourself",
     stats: ["Data-driven", "One component", "Fast iteration"],
     accent: "#2d9cdb",
-    backButton: { text: "DISCOVER A.I." },
-    nextButton: { text: "NEXT" },
+    kickerPosition: "top-left",
+    kickerStyle: {
+      position: "absolute",
+      top: "86px",
+      left: "32px",
+      width: "227px",
+      height: "24px",
+      fontFamily: '"Roobert TRIAL", sans-serif',
+      fontWeight: 600,
+      fontSize: "16px",
+      lineHeight: "24px",
+      letterSpacing: "-0.02em",
+      textTransform: "uppercase",
+      opacity: 1,
+    },
+    titleStyle: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -80px)",
+      whiteSpace: "nowrap",
+      fontFamily: '"Roobert TRIAL", sans-serif',
+      fontWeight: 400,
+      fontSize: "14px",
+      lineHeight: "24px",
+      letterSpacing: "0em",
+      textTransform: "uppercase",
+      opacity: 0.4,
+    },
+    bodyStyle: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "417px",
+      fontFamily: '"Roobert TRIAL", sans-serif',
+      fontWeight: 400,
+      fontSize: "60px",
+      lineHeight: "64px",
+      letterSpacing: "-0.08em",
+      textAlign: "center",
+      opacity: 1,
+      borderBottom: "1px solid #D1D5DB",
+    },
+    backButton: undefined,
+    nextButton: undefined,
+    footerContent: "button",
+    decorationsLayer: "screen",
     decorations: {
-      left: {
-        src: "/left-rect.svg",
-        alt: "left decoration",
-        width: 64,
-        height: 64,
-        className: "absolute left-0",
-      },
       right: {
-        src: "/right-rect.svg",
-        alt: "right decoration",
-        width: 64,
-        height: 64,
-        className: "absolute right-0",
+        src: "/rombusescenter.svg",
+        alt: "center decoration",
+        width: 762,
+        height: 762,
+        className:
+          "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+      },
+    },
+  },
+  {
+    id: "504",
+    kicker: "TO START ANALYSIS",
+    title: "CLICK TO TYPE",
+    body:
+      "Where are you from?",
+    stats: ["Data-driven", "One component", "Fast iteration"],
+    accent: "#2d9cdb",
+    kickerPosition: "top-left",
+    kickerStyle: {
+      position: "absolute",
+      top: "86px",
+      left: "32px",
+      width: "227px",
+      height: "24px",
+      fontFamily: '"Roobert TRIAL", sans-serif',
+      fontWeight: 600,
+      fontSize: "16px",
+      lineHeight: "24px",
+      letterSpacing: "-0.02em",
+      textTransform: "uppercase",
+      opacity: 1,
+    },
+    titleStyle: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -80px)",
+      whiteSpace: "nowrap",
+      fontFamily: '"Roobert TRIAL", sans-serif',
+      fontWeight: 400,
+      fontSize: "14px",
+      lineHeight: "24px",
+      letterSpacing: "0em",
+      textTransform: "uppercase",
+      opacity: 0.4,
+    },
+    bodyStyle: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "486px",
+      fontFamily: '"Roobert TRIAL", sans-serif',
+      fontWeight: 400,
+      fontSize: "60px",
+      lineHeight: "64px",
+      letterSpacing: "-0.07em",
+      textAlign: "center",
+      opacity: 1,
+      borderBottom: "1px solid #D1D5DB",
+    },
+    backButton: undefined,
+    nextButton: undefined,
+    footerContent: "button",
+    decorationsLayer: "screen",
+    decorations: {
+      right: {
+        src: "/rombusescenter.svg",
+        alt: "center decoration",
+        width: 762,
+        height: 762,
+        className:
+          "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
       },
     },
   },
@@ -131,6 +246,7 @@ export const slides: Slide[] = [
     accent: "#2d9cdb",
     backButton: { text: "DISCOVER A.I." },
     nextButton: undefined,
+    footerContent: "text",
     decorations: {
       left: {
         src: "/left-rect.svg",

@@ -57,17 +57,3 @@ body {
   font-family: "Roobert TRIAL", "Segoe UI", sans-serif;
 }
 
-@keyframes slideReveal {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.99);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.animate-slide-reveal {
-  animation: slideReveal 520ms ease;
-}
