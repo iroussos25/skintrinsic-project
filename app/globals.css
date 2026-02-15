@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Roobert TRIAL";
+  src: url("/fonts/RoobertTRIAL-Regular.woff2") format("woff2"),
+       url("/fonts/RoobertTRIAL-Regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert TRIAL";
+  src: url("/fonts/RoobertTRIAL-Medium.woff2") format("woff2"),
+       url("/fonts/RoobertTRIAL-Medium.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert TRIAL";
+  src: url("/fonts/RoobertTRIAL-SemiBold.woff2") format("woff2"),
+       url("/fonts/RoobertTRIAL-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert TRIAL";
+  src: url("/fonts/RoobertTRIAL-Bold.woff2") format("woff2"),
+       url("/fonts/RoobertTRIAL-Bold.woff") format("woff");
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,5 +54,20 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roobert TRIAL", "Segoe UI", sans-serif;
+}
+
+@keyframes slideReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-slide-reveal {
+  animation: slideReveal 520ms ease;
 }
