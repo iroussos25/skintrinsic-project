@@ -3,13 +3,12 @@ type FooterProps = {
 	total: number;
 };
 
-export default function Footer({ current, total }: FooterProps) {
-	const progress = total > 0 ? (current / total) * 100 : 0;
+export default function Footer({  }: FooterProps) {
 
 	return (
 		<footer className="px-8 pb-6 pt-2 ">
 			<div className="flex items-start gap-6">
-				<div className="h-[72px] w-[316px] text-xs uppercase tracking-[0.2em] text-neutral-500">
+				<div className="h-18 w-79 text-xs uppercase tracking-[0.2em] text-neutral-500">
 					<span>SKINTRINSIC DEVELOPED AN A.I. THAT CREATES A HIGHLY-PERSONALISED ROUTINE TAILORED TO WHAT YOUR SKIN NEEDS.</span>
 				</div>
 			</div>
