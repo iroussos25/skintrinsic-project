@@ -11,6 +11,7 @@ export default function Home() {
   const slide = useMemo(() => slides[activeIndex], [activeIndex]);
   const isFirst = activeIndex === 0;
   const isLast = activeIndex === slides.length - 1;
+  const textAlign = slide.textAlign ?? "center";
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-white text-[#1A1B1C]">
@@ -58,26 +59,45 @@ export default function Home() {
           </div>
         )}
 
-        <main className="flex flex-1 items-center justify-center px-0 pb-8">
-          <div key={slide.id} className="animate-slide-reveal w-full text-center">
+        <main
+          className={`flex flex-1 items-center justify-center pb-8 ${
+            textAlign === "left" ? "pl-8" : "px-0"
+          }`}
+        >
+          <div
+            key={slide.id}
+            className={`animate-slide-reveal w-full ${
+              textAlign === "left" ? "text-left" : "text-center"
+            }`}
+          >
             <p className="mb-12 text-sm uppercase tracking-[0.35em] text-neutral-600">
               {slide.kicker}
             </p>
             <h1
-              className="mx-auto max-w-5xl leading-none"
+              className={
+                textAlign === "left"
+                  ? "max-w-5xl leading-none"
+                  : "mx-auto max-w-5xl leading-none"
+              }
               style={{
                 fontFamily: '"Roobert TRIAL", sans-serif',
                 fontWeight: 300,
                 fontSize: "128px",
                 lineHeight: "120px",
                 letterSpacing: "-0.07em",
-                textAlign: "center",
+                textAlign,
                 color: "#1A1B1C",
               }}
             >
               {slide.title}
             </h1>
-            <p className="mx-auto mt-12 max-w-2xl text-base leading-relaxed text-neutral-700">
+            <p
+              className={
+                textAlign === "left"
+                  ? "mt-12 max-w-2xl text-base leading-relaxed text-neutral-700"
+                  : "mx-auto mt-12 max-w-2xl text-base leading-relaxed text-neutral-700"
+              }
+            >
               {slide.body}
             </p>
           </div>

@@ -26,6 +26,7 @@ export type Slide = {
   body?: string;
   stats?: string[];
   accent?: string;
+  textAlign?: "left" | "center";
   backButton?: ButtonConfig;
   nextButton?: ButtonConfig;
   decorations?: {
@@ -37,12 +38,13 @@ export type Slide = {
 
 export const slides: Slide[] = [
   {
-    id: "overview",
+    id: "000",
     kicker: "",
     title: "Sophisticated skincare",
     body: "",
     stats: [""],
     accent: "#ff6f59",
+    textAlign: "center",
     backButton: { text: "DISCOVER A.I." },
     nextButton: { text: "TAKE TEST" },
     decorations: {
@@ -73,15 +75,35 @@ export const slides: Slide[] = [
     ],
   },
   {
-    id: "story",
-    kicker: "Audience",
-    title: "Designed for confident first impressions",
-    body:
-      "Each slide builds trust with a clean layout, bold typography, and a calm color rhythm. The content swaps while the frame stays stable.",
-    stats: ["Minimal UI chrome", "Focused CTA", "Reusable layout"],
+    id: "001",
+    kicker: "",
+    title: "Sophisticated skincare",
+    body: "",
+    stats: [""],
     accent: "#2f80ed",
-    backButton: { text: "DISCOVER A.I." },
+    textAlign: "left",
+    backButton: undefined,
     nextButton: { text: "TAKE TEST" },
+    decorations: {
+      right: {
+        src: "/rombuses.svg",
+        alt: "right decoration",
+        width: 301,
+        height: 301,
+        className: "absolute right-0 top-1/2 -translate-y-[calc(50%+293px)]",
+      },
+    },
+  },
+  {
+    id: "002",
+    kicker: "Execution",
+    title: "Easy to extend and reorder",
+    body:
+      "Adding a slide is just adding data. The deck can scale to new sections without duplicating layout code or design tokens.",
+    stats: ["Data-driven", "One component", "Fast iteration"],
+    accent: "#2d9cdb",
+    backButton: { text: "DISCOVER A.I." },
+    nextButton: { text: "NEXT" },
     decorations: {
       left: {
         src: "/left-rect.svg",
@@ -100,9 +122,9 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: "next",
+    id: "003",
     kicker: "Execution",
-    title: "Easy to extend and reorder",
+    title: "TESTING",
     body:
       "Adding a slide is just adding data. The deck can scale to new sections without duplicating layout code or design tokens.",
     stats: ["Data-driven", "One component", "Fast iteration"],
