@@ -47,6 +47,7 @@ export type Slide = {
     rightImageSrc: string;
     rightImageAlt: string;
   };
+  customComponent?: "analysisCategories";
 };
 
 export const slides: Slide[] = [
@@ -282,6 +283,27 @@ export const slides: Slide[] = [
       rightImageSrc: "/gallery.svg",
       rightImageAlt: "gallery",
     },
+  },
+  {
+    id: "006",
+    kicker: "A.I. ANALYSIS",
+    kickerPosition: "top-left",
+    kickerStyle: {
+      fontWeight: 700,
+    },
+    title: "A.I. HAS ESTIMATED THE FOLLOWING.\nFIX ESTIMATED INFORMATION IF NEEDED",
+    titleStyle: {
+      fontSize: "16px",
+      fontWeight: 400,
+      letterSpacing: "0.15em",
+      lineHeight: "24px",
+      marginBottom: "40px",
+      whiteSpace: "pre-wrap",
+    },
+    backButton: undefined,
+    nextButton: undefined,
+    footerContent: "button",
+    customComponent: "analysisCategories",
   },
 ];
 

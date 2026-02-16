@@ -12,6 +12,7 @@ import NextButton from "./components/next-button";
 import SlideContent from "./components/slide-content";
 import ContentDecorations from "./components/content-decorations";
 import TwoColumnImageLayout from "./components/two-column-image-layout";
+import AnalysisCategoriesLayout from "./components/analysis-categories-layout";
 import SlideTransitionWrapper from "./components/slide-transition-wrapper";
 import { slides } from "./data/slides";
 
@@ -21,6 +22,7 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [hasSubmittedData, setHasSubmittedData] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showGoodbyeDialog, setShowGoodbyeDialog] = useState(false);
   const [showNextButtonChevrons, setShowNextButtonChevrons] = useState(false);
@@ -39,7 +41,7 @@ export default function Home() {
   const isNameSlide = ["002", "504"].includes(slide.id);
   const isLocationSlide = slide.id === "504";
   const isLoadingLocation = isLocationSlide && isSubmitting;
-  const hasUnsavedData = name.trim().length > 0 && !isSubmitting;
+  const hasUnsavedData = name.trim().length > 0 && !isSubmitting && !hasSubmittedData;
   const sanitizeText = (value: string) =>
     value.replace(/[^a-zA-Z\s'-]/g, "");
 
@@ -143,6 +145,7 @@ export default function Home() {
         }
       );
       if (response.ok) {
+        setHasSubmittedData(true);
         const slide005Index = slides.findIndex((item) => item.id === "005");
         if (slide005Index !== -1) {
           setActiveIndex(slide005Index);
@@ -168,7 +171,7 @@ export default function Home() {
       <ScreenDecorations slide={slide} show={decorationsLayer === "screen"} />
 
       <div className="relative z-10 flex min-h-screen w-full flex-col">
-        <Header onLogoClick={() => setActiveIndex(0)} />
+        <Header onLogoClick={() => setActiveIndex(0)} slideId={slide.id} />
 
         <OverlayImages overlays={slide.overlays} />
 
@@ -204,12 +207,29 @@ export default function Home() {
             </p>
           )}
 
-          {slide.twoColumnImages ? (
+          {slide.customComponent === "analysisCategories" ? (
+            <>
+              {slide.title && (
+                <h3
+                  className="text-neutral-600 uppercase tracking-[0.15em] px-8"
+                  style={slide.titleStyle}
+                >
+                  {slide.title}
+                </h3>
+              )}
+              <AnalysisCategoriesLayout />
+            </>
+          ) : slide.twoColumnImages ? (
             <TwoColumnImageLayout
               leftImageSrc={slide.twoColumnImages.leftImageSrc}
               leftImageAlt={slide.twoColumnImages.leftImageAlt}
               rightImageSrc={slide.twoColumnImages.rightImageSrc}
               rightImageAlt={slide.twoColumnImages.rightImageAlt}
+              onNavigateToNext={() => {
+                maybeNavigate(() =>
+                  setActiveIndex((prev) => Math.min(slides.length - 1, prev + 1))
+                );
+              }}
             />
           ) : (
             <SlideContent
@@ -244,6 +264,11 @@ export default function Home() {
           onBack={() =>
             maybeNavigate(() =>
               setActiveIndex(getBackNavigationIndex())
+            )
+          }
+          onNext={() =>
+            maybeNavigate(() =>
+              setActiveIndex(Math.min(slides.length - 1, activeIndex + 1))
             )
           }
         />

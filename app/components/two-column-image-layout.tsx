@@ -5,12 +5,15 @@ import { useState } from "react";
 import ConfirmModal from "./confirm-modal";
 import ImageUploadModal from "./image-upload-modal";
 import CameraCaptureModal from "./camera-capture-modal";
+import CameraSetupLoading from "./camera-setup-loading";
+import PreparingAnalysisLoading from "./preparing-analysis-loading";
 
 type TwoColumnImageLayoutProps = {
   leftImageSrc: string;
   leftImageAlt: string;
   rightImageSrc: string;
   rightImageAlt: string;
+  onNavigateToNext?: () => void;
 };
 
 export default function TwoColumnImageLayout({
@@ -18,12 +21,15 @@ export default function TwoColumnImageLayout({
   leftImageAlt,
   rightImageSrc,
   rightImageAlt,
+  onNavigateToNext,
 }: TwoColumnImageLayoutProps) {
   const [hoveredSide, setHoveredSide] = useState<"left" | "right" | null>(null);
   const [showCameraDialog, setShowCameraDialog] = useState(false);
   const [showGalleryDialog, setShowGalleryDialog] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showCameraSetupLoading, setShowCameraSetupLoading] = useState(false);
   const [showCameraCapture, setShowCameraCapture] = useState(false);
+  const [showPreparingAnalysis, setShowPreparingAnalysis] = useState(false);
 
   const handleImageUpload = async (base64Image: string) => {
     const response = await fetch(
@@ -41,7 +47,12 @@ export default function TwoColumnImageLayout({
       throw new Error(`Upload failed: ${response.statusText}`);
     }
 
-    return await response.json();
+    const result = await response.json();
+    
+    // Show preparing analysis screen after successful upload
+    setShowPreparingAnalysis(true);
+    
+    return result;
   };
   const isLeftHovered = hoveredSide === "left";
   const isRightHovered = hoveredSide === "right";
@@ -57,7 +68,7 @@ export default function TwoColumnImageLayout({
         cancelText="DENY"
         onConfirm={() => {
           setShowCameraDialog(false);
-          setShowCameraCapture(true);
+          setShowCameraSetupLoading(true);
         }}
         onCancel={() => setShowCameraDialog(false)}
       />
@@ -77,10 +88,26 @@ export default function TwoColumnImageLayout({
         onClose={() => setShowUploadModal(false)}
         onUpload={handleImageUpload}
       />
+      <CameraSetupLoading
+        isOpen={showCameraSetupLoading}
+        onComplete={() => {
+          setShowCameraSetupLoading(false);
+          setShowCameraCapture(true);
+        }}
+      />
       <CameraCaptureModal
         isOpen={showCameraCapture}
         onClose={() => setShowCameraCapture(false)}
         onCapture={handleImageUpload}
+      />
+      <PreparingAnalysisLoading
+        isOpen={showPreparingAnalysis}
+        onComplete={() => {
+          setShowPreparingAnalysis(false);
+          if (onNavigateToNext) {
+            onNavigateToNext();
+          }
+        }}
       />
       <Image
         src="/select-way.svg"

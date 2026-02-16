@@ -1,8 +1,11 @@
 type HeaderProps = {
   onLogoClick?: () => void;
+  slideId?: string;
 };
 
-export default function Header({ onLogoClick }: HeaderProps) {
+export default function Header({ onLogoClick, slideId }: HeaderProps) {
+  const headerText = slideId === "006" ? "[ ANALYSIS ]" : "[ INTRO ]";
+
 	return (
     <header className="flex flex-wrap items-center justify-between gap-4 bg-white px-8 py-5">
       <button
@@ -11,7 +14,7 @@ export default function Header({ onLogoClick }: HeaderProps) {
       >
         <div>
           <p className="text-xs uppercase tracking-[-0.02em] text-neutral-600">
-            <b>Skintrinsic</b>  [ INTRO ]
+            <b>Skintrinsic</b>  {headerText}
           </p>
         </div>
       </button>
