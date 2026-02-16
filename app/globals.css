@@ -57,3 +57,23 @@ body {
   font-family: "Roobert TRIAL", "Segoe UI", sans-serif;
 }
 
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    rgba(229, 231, 235, 0.6) 0%,
+    rgba(229, 231, 235, 0.85) 50%,
+    rgba(229, 231, 235, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
+

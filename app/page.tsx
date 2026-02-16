@@ -4,41 +4,74 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import Footer from "./components/footer";
 import Header from "./components/header";
+import LoadingSkeleton from "./components/loading-skeleton";
 import { slides } from "./data/slides";
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const slide = useMemo(() => slides[activeIndex], [activeIndex]);
   const isFirst = activeIndex === 0;
   const isLast = activeIndex === slides.length - 1;
   const textAlign = slide.textAlign ?? "center";
   const decorationsLayer = slide.decorationsLayer ?? "content";
   const isNameSlide = ["002", "504"].includes(slide.id);
+  const isLocationSlide = slide.id === "504";
+  const isLoadingLocation = isLocationSlide && isSubmitting;
+  const sanitizeText = (value: string) =>
+    value.replace(/[^a-zA-Z\s'-]/g, "");
 
   const handleNameSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimmedValue = (isLocationSlide ? location : name).trim();
+
+    if (!trimmedValue || isSubmitting) {
+      return;
+    }
+
+    setSubmitError(null);
+
+    if (!isLocationSlide) {
+      setName(trimmedValue);
+      const targetIndex = slides.findIndex((item) => item.id === "504");
+      if (targetIndex !== -1) {
+        setActiveIndex(targetIndex);
+      }
+      return;
+    }
+
     const trimmedName = name.trim();
 
-    if (!trimmedName || isSubmitting) {
+    if (!trimmedName) {
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await fetch(
+      const response = await fetch(
         "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseOne",
         {
           method: "POST",
           headers: {
-            "Content-Type": "text/plain",
+            "Content-Type": "application/json",
           },
-          body: trimmedName,
+          body: JSON.stringify({ name: trimmedName, location: trimmedValue }),
         }
       );
+      if (response.ok) {
+        setActiveIndex((index) => Math.min(slides.length - 1, index + 1));
+      } else {
+        const reason = await response.text();
+        setSubmitError(
+          reason ? `Submission failed: ${reason}` : "Submission failed."
+        );
+      }
     } catch (error) {
-      console.error("Failed to submit name", error);
+      const reason = error instanceof Error ? error.message : "Unknown error";
+      setSubmitError(`Submission failed: ${reason}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -161,19 +194,39 @@ export default function Home() {
             {slide.bodyStyle && isNameSlide ? (
               <form
                 onSubmit={handleNameSubmit}
-                className="text-[#1A1B1C]"
+                className="relative text-[#1A1B1C]"
                 style={slide.bodyStyle}
               >
                 <input
                   type="text"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  value={isLocationSlide ? location : name}
+                  onChange={(event) =>
+                    isLocationSlide
+                      ? setLocation(sanitizeText(event.target.value))
+                      : setName(sanitizeText(event.target.value))
+                  }
                   placeholder={slide.body}
                   autoComplete="name"
                   aria-label="Enter your name"
                   disabled={isSubmitting}
-                  className="h-full w-full bg-transparent text-center placeholder:text-[#1A1B1C]/60 focus:outline-none disabled:opacity-60"
+                  className={`h-full w-full bg-transparent text-center placeholder:text-[#1A1B1C]/60 focus:outline-none disabled:opacity-60 ${
+                    isLoadingLocation ? "text-transparent caret-transparent" : ""
+                  }`}
                 />
+                {isLoadingLocation && (
+                  <>
+                    <LoadingSkeleton />
+                    <span
+                      className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-[#A0A4AB] border-t-transparent"
+                      aria-hidden="true"
+                    />
+                  </>
+                )}
+                {submitError && (
+                  <span className="mt-3 block text-xs text-red-500">
+                    {submitError}
+                  </span>
+                )}
               </form>
             ) : slide.bodyStyle ? (
               <p className="text-[#1A1B1C]" style={slide.bodyStyle}>
