@@ -45,13 +45,6 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -107,6 +100,29 @@ body {
   }
 }
 
+/* Slide transition animations */
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* ============================================================================
    UTILITY CLASSES
    ============================================================================ */
@@ -134,5 +150,14 @@ body {
 
 .chevron-pulse-3 {
   animation: slideInChevron 2s ease-in-out 0.4s forwards, pulseChevron 1s ease-in-out 2.4s infinite;
+}
+
+/* Slide transition animations */
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-in-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-in-out;
 }
 

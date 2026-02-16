@@ -11,6 +11,8 @@ import BackButton from "./components/back-button";
 import NextButton from "./components/next-button";
 import SlideContent from "./components/slide-content";
 import ContentDecorations from "./components/content-decorations";
+import TwoColumnImageLayout from "./components/two-column-image-layout";
+import SlideTransitionWrapper from "./components/slide-transition-wrapper";
 import { slides } from "./data/slides";
 
 export default function Home() {
@@ -25,10 +27,13 @@ export default function Home() {
   const [pendingNavigation, setPendingNavigation] = useState<{
     callback: () => void;
   } | null>(null);
+  const [previousIndex, setPreviousIndex] = useState(0);
 
   const slide = useMemo(() => slides[activeIndex], [activeIndex]);
   const isFirst = activeIndex === 0;
   const isLast = activeIndex === slides.length - 1;
+  const navigationDirection: "forward" | "backward" =
+    activeIndex > previousIndex ? "forward" : "backward";
   const textAlign = slide.textAlign ?? "center";
   const decorationsLayer = slide.decorationsLayer ?? "content";
   const isNameSlide = ["002", "504"].includes(slide.id);
@@ -50,6 +55,10 @@ export default function Home() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedData]);
+
+  useEffect(() => {
+    setPreviousIndex(activeIndex);
+  }, [activeIndex]);
 
   useEffect(() => {
     if (showGoodbyeDialog && pendingNavigation) {
@@ -84,6 +93,16 @@ export default function Home() {
     } else {
       callback();
     }
+  };
+
+  const getBackNavigationIndex = () => {
+    if (slide.backButton?.navigateTo) {
+      const targetIndex = slides.findIndex(
+        (item) => item.id === slide.backButton?.navigateTo
+      );
+      return targetIndex !== -1 ? targetIndex : Math.max(0, activeIndex - 1);
+    }
+    return Math.max(0, activeIndex - 1);
   };
 
   const handleNameSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -124,7 +143,12 @@ export default function Home() {
         }
       );
       if (response.ok) {
-        setActiveIndex((index) => Math.min(slides.length - 1, index + 1));
+        const slide005Index = slides.findIndex((item) => item.id === "005");
+        if (slide005Index !== -1) {
+          setActiveIndex(slide005Index);
+        } else {
+          setActiveIndex((index) => Math.min(slides.length - 1, index + 1));
+        }
       } else {
         const reason = await response.text();
         setSubmitError(
@@ -154,7 +178,7 @@ export default function Home() {
             isFirst={isFirst}
             onClick={() =>
               maybeNavigate(() =>
-                setActiveIndex((index) => Math.max(0, index - 1))
+                setActiveIndex(getBackNavigationIndex())
               )
             }
           />
@@ -173,42 +197,53 @@ export default function Home() {
           />
         )}
 
-        {slide.kickerPosition === "top-left" && slide.kicker && (
-          <p className="text-neutral-600" style={slide.kickerStyle}>
-            {slide.kicker}
-          </p>
-        )}
+        <SlideTransitionWrapper key={activeIndex} direction={navigationDirection}>
+          {slide.kickerPosition === "top-left" && slide.kicker && (
+            <p className="text-neutral-600" style={slide.kickerStyle}>
+              {slide.kicker}
+            </p>
+          )}
 
-        <SlideContent
-          slide={slide}
-          textAlign={textAlign}
-          isNameSlide={isNameSlide}
-          isLoadingLocation={isLoadingLocation}
-          isSubmitting={isSubmitting}
-          submitError={submitError}
-          inputValue={isLocationSlide ? location : name}
-          onInputChange={(event) => {
-            const sanitized = sanitizeText(event.target.value);
-            if (isLocationSlide) {
-              setLocation(sanitized);
-            } else {
-              setName(sanitized);
-            }
-          }}
-          onFormSubmit={handleNameSubmit}
-        />
+          {slide.twoColumnImages ? (
+            <TwoColumnImageLayout
+              leftImageSrc={slide.twoColumnImages.leftImageSrc}
+              leftImageAlt={slide.twoColumnImages.leftImageAlt}
+              rightImageSrc={slide.twoColumnImages.rightImageSrc}
+              rightImageAlt={slide.twoColumnImages.rightImageAlt}
+            />
+          ) : (
+            <SlideContent
+              slide={slide}
+              textAlign={textAlign}
+              isNameSlide={isNameSlide}
+              isLoadingLocation={isLoadingLocation}
+              isSubmitting={isSubmitting}
+              submitError={submitError}
+              inputValue={isLocationSlide ? location : name}
+              onInputChange={(event) => {
+                const sanitized = sanitizeText(event.target.value);
+                if (isLocationSlide) {
+                  setLocation(sanitized);
+                } else {
+                  setName(sanitized);
+                }
+              }}
+              onFormSubmit={handleNameSubmit}
+            />
+          )}
 
-        <ContentDecorations
-          slide={slide}
-          show={decorationsLayer !== "screen"}
-          showChevrons={showNextButtonChevrons}
-        />
+          <ContentDecorations
+            slide={slide}
+            show={decorationsLayer !== "screen"}
+            showChevrons={showNextButtonChevrons}
+          />
+        </SlideTransitionWrapper>
 
         <Footer
           footerContent={slide.footerContent}
           onBack={() =>
             maybeNavigate(() =>
-              setActiveIndex((index) => Math.max(0, index - 1))
+              setActiveIndex(getBackNavigationIndex())
             )
           }
         />

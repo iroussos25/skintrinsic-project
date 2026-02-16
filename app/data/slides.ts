@@ -1,6 +1,7 @@
 export type ButtonConfig = {
   text: string;
-  position?: "left" | "right";
+  position?: "top-left" | "bottom-left" | "bottom-right";
+  navigateTo?: string;
 };
 
 export type DecorationConfig = {
@@ -40,6 +41,12 @@ export type Slide = {
   decorationsLayer?: "content" | "screen";
   overlays?: OverlayConfig[];
   footerContent?: "text" | "button" | "both" | "none";
+  twoColumnImages?: {
+    leftImageSrc: string;
+    leftImageAlt: string;
+    rightImageSrc: string;
+    rightImageAlt: string;
+  };
 };
 
 export const slides: Slide[] = [
@@ -262,6 +269,18 @@ export const slides: Slide[] = [
         height: 64,
         className: "absolute right-0",
       },
+    },
+  },
+  {
+    id: "005",
+    backButton: { text: "BACK", navigateTo: "504", position: "bottom-left" },
+    nextButton: undefined,
+    footerContent: "none",
+    twoColumnImages: {
+      leftImageSrc: "/camera.svg",
+      leftImageAlt: "camera",
+      rightImageSrc: "/gallery.svg",
+      rightImageAlt: "gallery",
     },
   },
 ];
