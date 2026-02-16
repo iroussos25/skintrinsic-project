@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   FONT FACES
+   ============================================================================ */
+
 @font-face {
   font-family: "Roobert TRIAL";
   src: url("/fonts/RoobertTRIAL-Regular.woff2") format("woff2"),
@@ -32,6 +36,10 @@
   font-display: swap;
 }
 
+/* ============================================================================
+   ROOT STYLES
+   ============================================================================ */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -57,6 +65,11 @@ body {
   font-family: "Roobert TRIAL", "Segoe UI", sans-serif;
 }
 
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+/* Loading skeleton shimmer animation */
 @keyframes skeletonShimmer {
   0% {
     background-position: -200% 0;
@@ -66,6 +79,39 @@ body {
   }
 }
 
+/* Chevron slide-in animation from left */
+@keyframes slideInChevron {
+  0% {
+    transform: translateX(-150px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Chevron pulsating animation */
+@keyframes pulseChevron {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Skeleton shimmer effect for loading states */
 .skeleton-shimmer {
   background-image: linear-gradient(
     90deg,
@@ -75,5 +121,18 @@ body {
   );
   background-size: 200% 100%;
   animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
+
+/* Staggered chevron pulse animations */
+.chevron-pulse-1 {
+  animation: slideInChevron 2s ease-in-out 0s forwards, pulseChevron 1s ease-in-out 2s infinite;
+}
+
+.chevron-pulse-2 {
+  animation: slideInChevron 2s ease-in-out 0.2s forwards, pulseChevron 1s ease-in-out 2.2s infinite;
+}
+
+.chevron-pulse-3 {
+  animation: slideInChevron 2s ease-in-out 0.4s forwards, pulseChevron 1s ease-in-out 2.4s infinite;
 }
 

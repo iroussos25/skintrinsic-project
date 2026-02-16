@@ -1,13 +1,11 @@
 import Image from "next/image";
 
 type FooterProps = {
-	current: number;
-	total: number;
 	footerContent?: "text" | "button" | "both" | "none";
 	onBack?: () => void;
 };
 
-export default function Footer({ current, total, footerContent = "text", onBack }: FooterProps) {
+export default function Footer({ footerContent = "text", onBack }: FooterProps) {
 	if (footerContent === "none") {
 		return null;
 	}
@@ -23,7 +21,7 @@ export default function Footer({ current, total, footerContent = "text", onBack 
 				{(footerContent === "button" || footerContent === "both") && onBack && (
 					<button
 						onClick={onBack}
-						className="flex items-center gap-2 transition hover:opacity-80"
+						className="flex cursor-pointer items-center gap-2 transition hover:opacity-80"
 					>
 						<Image src="/back.svg" alt="back" width={44} height={44} />
 						<span className="font-semibold text-[#1A1B1C]" style={{ fontSize: "14px" }}>

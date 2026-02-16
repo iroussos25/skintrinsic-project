@@ -94,7 +94,7 @@ export const slides: Slide[] = [
     footerContent: "text",
     decorations: {
       right: {
-        src: "/rombuses.svg",
+        src: "/right-rect.svg",
         alt: "right decoration",
         width: 301,
         height: 301,
