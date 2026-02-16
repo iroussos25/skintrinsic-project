@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import ConfirmModal from "./confirm-modal";
+import ImageUploadModal from "./image-upload-modal";
+import CameraCaptureModal from "./camera-capture-modal";
 
 type TwoColumnImageLayoutProps = {
   leftImageSrc: string;
@@ -20,6 +22,27 @@ export default function TwoColumnImageLayout({
   const [hoveredSide, setHoveredSide] = useState<"left" | "right" | null>(null);
   const [showCameraDialog, setShowCameraDialog] = useState(false);
   const [showGalleryDialog, setShowGalleryDialog] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showCameraCapture, setShowCameraCapture] = useState(false);
+
+  const handleImageUpload = async (base64Image: string) => {
+    const response = await fetch(
+      "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: base64Image }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Upload failed: ${response.statusText}`);
+    }
+
+    return await response.json();
+  };
   const isLeftHovered = hoveredSide === "left";
   const isRightHovered = hoveredSide === "right";
   const isLeftDimmed = hoveredSide === "right";
@@ -32,7 +55,10 @@ export default function TwoColumnImageLayout({
         title="ALLOW A.I. TO ACCESS YOUR CAMERA?"
         confirmText="ALLOW"
         cancelText="DENY"
-        onConfirm={() => setShowCameraDialog(false)}
+        onConfirm={() => {
+          setShowCameraDialog(false);
+          setShowCameraCapture(true);
+        }}
         onCancel={() => setShowCameraDialog(false)}
       />
       <ConfirmModal
@@ -40,8 +66,21 @@ export default function TwoColumnImageLayout({
         title="ALLOW A.I. TO ACCESS YOUR GALLERY?"
         confirmText="ALLOW"
         cancelText="DENY"
-        onConfirm={() => setShowGalleryDialog(false)}
+        onConfirm={() => {
+          setShowGalleryDialog(false);
+          setShowUploadModal(true);
+        }}
         onCancel={() => setShowGalleryDialog(false)}
+      />
+      <ImageUploadModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onUpload={handleImageUpload}
+      />
+      <CameraCaptureModal
+        isOpen={showCameraCapture}
+        onClose={() => setShowCameraCapture(false)}
+        onCapture={handleImageUpload}
       />
       <Image
         src="/select-way.svg"

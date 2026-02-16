@@ -53,7 +53,7 @@ export default function SlideContent({
                 : "mx-auto max-w-5xl leading-none"
             }
             style={{
-              fontFamily: '"Roobert TRIAL", sans-serif',
+              fontFamily: '"Poppins", sans-serif',
               fontWeight: 300,
               fontSize: "128px",
               lineHeight: "120px",
