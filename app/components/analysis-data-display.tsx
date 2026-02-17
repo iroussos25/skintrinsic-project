@@ -91,6 +91,21 @@ export default function AnalysisDataDisplay({
 
   return (
     <>
+      <style>{`
+        .right-panel-fixed {
+          height: calc(${resolvedPanelHeight} * 0.5);
+        }
+        @media (min-width: 640px) {
+          .right-panel-fixed {
+            height: ${resolvedPanelHeight};
+          }
+        }
+        @media (min-width: 900px) {
+          .right-panel-fixed {
+            height: calc(${resolvedPanelHeight} * 1.2);
+          }
+        }
+      `}</style>
       <AnalysisCenterPanel 
         selectedData={selectedData}
         selectedEntryName={resolvedCenterLabel}
@@ -101,10 +116,8 @@ export default function AnalysisDataDisplay({
 
       {/* Right rectangle - shows selected category data with headers */}
       <div
-        className="border border-black flex flex-col overflow-y-auto p-4"
+        className="border border-black flex flex-col overflow-y-auto p-4 w-full sm:w-[28%] sm:min-w-62.5 shrink-0 right-panel-fixed"
         style={{
-          width: "28%",
-          height: resolvedPanelHeight,
           backgroundColor: "#F3F3F4",
         }}
       >
@@ -123,7 +136,7 @@ export default function AnalysisDataDisplay({
         {/* Data entries or definition content */}
         {rightPanelHeadingOverride || rightPanelBodyOverride ? (
           <div>
-            <div style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px" }}>
+            <div className="text-[8px] sm:text-[16px]" style={{ fontWeight: 600, marginBottom: "12px" }}>
               {rightPanelHeadingOverride || "—"}
             </div>
             <div style={{ fontSize: "14px", lineHeight: "22px", color: "#1A1B1C" }}>

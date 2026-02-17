@@ -24,6 +24,7 @@ export default function DemographicsLayout({
 }: DemographicsLayoutProps) {
   const [selectedButton, setSelectedButton] = useState<number | null>(0);
   const panelHeight = "calc(3 * (clamp(80px, 100px, 120px) + 4px) - 4px)";
+  const panelHeightStyle = { "--panel-height": panelHeight } as React.CSSProperties;
 
   // Wire up reset and confirm functions to refs
   useEffect(() => {
@@ -70,8 +71,6 @@ export default function DemographicsLayout({
   };
 
   const buttonStyle = (index: number) => ({
-    width: "clamp(200px, 85vw, 280px)",
-    height: "clamp(80px, 100px, 120px)",
     backgroundColor: selectedButton === index ? "#000000" : "#F3F3F4",
     border: "1px solid #000000",
     cursor: "pointer",
@@ -82,8 +81,12 @@ export default function DemographicsLayout({
   return (
     <div className="relative flex flex-col sm:flex-row flex-1 items-center sm:items-start justify-center gap-1 px-4 sm:px-6 md:px-8" style={{ marginTop: "200px", marginBottom: "auto" }}>
       {/* Left column - 3 rectangles stacked as buttons */}
-      <div className="flex flex-col gap-1 w-full sm:w-auto items-center sm:items-start">
+      <div
+        className="flex flex-col gap-1 w-full sm:w-auto items-center sm:items-start h-(--panel-height) min-[900px]:h-[calc(var(--panel-height)*1.2)]"
+        style={panelHeightStyle}
+      >
         <button
+          className="w-full sm:w-50 h-[calc((var(--panel-height)-8px)/3)] min-[900px]:h-[calc((var(--panel-height)*1.2-8px)/3)]"
           onClick={() => setSelectedButton(0)}
           style={{
             ...buttonStyle(0),
@@ -122,6 +125,7 @@ export default function DemographicsLayout({
           </span>
         </button>
         <button
+          className="w-full sm:w-50 h-[calc((var(--panel-height)-8px)/3)] min-[900px]:h-[calc((var(--panel-height)*1.2-8px)/3)]"
           onClick={() => setSelectedButton(1)}
           style={{
             ...buttonStyle(1),
@@ -160,6 +164,7 @@ export default function DemographicsLayout({
           </span>
         </button>
         <button
+          className="w-full sm:w-50 h-[calc((var(--panel-height)-8px)/3)] min-[900px]:h-[calc((var(--panel-height)*1.2-8px)/3)]"
           onClick={() => setSelectedButton(2)}
           style={{
             ...buttonStyle(2),

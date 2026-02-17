@@ -91,6 +91,42 @@ body {
    UTILITY CLASSES
    ============================================================================ */
 
+/* Center panel responsive height */
+.center-panel-height {
+  height: calc(var(--panel-height) * var(--mobile-multiplier));
+}
+
+@media (min-width: 640px) {
+  .center-panel-height {
+    height: var(--panel-height);
+  }
+}
+
+@media (min-width: 900px) {
+  .center-panel-height {
+    height: calc(var(--panel-height) * var(--desktop-multiplier));
+  }
+}
+
+/* Right panel responsive height */
+.right-panel-height {
+  height: calc(var(--panel-height) * var(--mobile-multiplier));
+  min-height: calc(var(--panel-height) * var(--mobile-multiplier));
+}
+
+@media (min-width: 640px) {
+  .right-panel-height {
+    height: var(--panel-height);
+    min-height: var(--panel-height);
+  }
+}
+
+@media (min-width: 900px) {
+  .right-panel-height {
+    height: calc(var(--panel-height) * var(--desktop-multiplier));
+    min-height: calc(var(--panel-height) * var(--desktop-multiplier));
+  }
+}
 /* Skeleton shimmer effect for loading states */
 .skeleton-shimmer {
   background-image: linear-gradient(

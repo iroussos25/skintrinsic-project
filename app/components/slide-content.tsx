@@ -56,9 +56,27 @@ export default function SlideContent({
         )}
 
         {slide.titleStyle ? (
-          <h1 className="hidden sm:block text-[#1A1B1C]" style={slide.titleStyle}>
-            {slide.title}
-          </h1>
+          <>
+            {/* Mobile title - 50% smaller */}
+            <h1 
+              className="block sm:hidden text-[#1A1B1C]" 
+              style={{
+                ...slide.titleStyle,
+                fontSize: slide.titleStyle.fontSize 
+                  ? `calc(${slide.titleStyle.fontSize} * 0.5)` 
+                  : '36px',
+                lineHeight: slide.titleStyle.lineHeight 
+                  ? `calc(${slide.titleStyle.lineHeight} * 0.5)` 
+                  : '36px',
+              }}
+            >
+              {slide.title}
+            </h1>
+            {/* Desktop title - original size */}
+            <h1 className="hidden sm:block text-[#1A1B1C]" style={slide.titleStyle}>
+              {slide.title}
+            </h1>
+          </>
         ) : slide.id === "000" && titleStyleOverride ? (
           <h1
             className={

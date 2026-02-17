@@ -53,6 +53,7 @@ export default function CosmeticConcernsLayout({
 }: CosmeticConcernsLayoutProps) {
   const [selectedButton, setSelectedButton] = useState<number | null>(0);
   const panelHeight = "calc(4 * (clamp(80px, 100px, 120px) + 4px) - 4px)";
+  const panelHeightStyle = { "--panel-height": panelHeight } as React.CSSProperties;
 
   const formatPercentage = (value: number | string) => {
     if (typeof value === "number") {
@@ -78,8 +79,6 @@ export default function CosmeticConcernsLayout({
   };
 
   const buttonStyle = (index: number) => ({
-    width: "200px",
-    height: "clamp(80px, 100px, 120px)",
     backgroundColor: selectedButton === index ? "#000000" : "#F3F3F4",
     border: "1px solid #000000",
     cursor: "pointer",
@@ -94,16 +93,20 @@ export default function CosmeticConcernsLayout({
 
   return (
     <div
-      className="relative flex flex-1 items-start justify-center gap-1 px-4 sm:px-6 md:px-8"
-      style={{ marginTop: "200px", marginBottom: "auto" }}
+      className="relative flex flex-col sm:flex-row flex-1 items-center sm:items-start justify-center gap-1 px-4 sm:px-6 md:px-8"
+      style={{ marginTop: "180px", marginBottom: "auto" }}
     >
       {/* Left column - 2 columns of 4 boxes each */}
-      <div className="flex gap-1">
+      <div
+        className="flex gap-1 w-full sm:w-auto items-center sm:items-start h-(--panel-height) min-[900px]:h-[calc(var(--panel-height)*1.2)]"
+        style={panelHeightStyle}
+      >
         <div className="flex flex-col gap-1">
           {cosmeticConcernLabels.slice(0, 4).map((label, index) => (
             <button
               key={label}
               onClick={() => setSelectedButton(index)}
+              className="w-full sm:w-50 h-[calc((var(--panel-height)-12px)/4)] min-[900px]:h-[calc((var(--panel-height)*1.2-12px)/4)]"
               style={buttonStyle(index)}
               onMouseOver={(e) => {
                 if (selectedButton !== index) {
@@ -144,6 +147,7 @@ export default function CosmeticConcernsLayout({
               <button
                 key={label}
                 onClick={() => setSelectedButton(buttonIndex)}
+                className="w-full sm:w-50 h-[calc((var(--panel-height)-12px)/4)] min-[900px]:h-[calc((var(--panel-height)*1.2-12px)/4)]"
                 style={buttonStyle(buttonIndex)}
                 onMouseOver={(e) => {
                   if (selectedButton !== buttonIndex) {

@@ -42,14 +42,16 @@ export default function AnalysisCenterPanel({
 
   return (
     <div
-      className="border border-black flex-1 p-4"
+      className="border border-black flex-none sm:flex-1 p-4 w-full sm:w-auto overflow-hidden center-panel-height"
       style={{
-        height: resolvedPanelHeight,
+        "--panel-height": resolvedPanelHeight,
+        "--mobile-multiplier": "0.75",
+        "--desktop-multiplier": "1.2",
         backgroundColor: "#F3F3F4",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-      }}
+      } as React.CSSProperties}
     >
       {shouldRenderContent ? (
         <>
