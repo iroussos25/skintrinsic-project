@@ -28,6 +28,7 @@ export default function Home() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showGoodbyeDialog, setShowGoodbyeDialog] = useState(false);
   const [showNextButtonChevrons, setShowNextButtonChevrons] = useState(false);
+  const [introHoverSide, setIntroHoverSide] = useState<"left" | "right" | null>(null);
   const [pendingNavigation, setPendingNavigation] = useState<{
     callback: () => void;
   } | null>(null);
@@ -56,6 +57,39 @@ export default function Home() {
   const showAIWrongText = ["007", "008", "009", "010"].includes(slide.id);
   const sanitizeText = (value: string) =>
     value.replace(/[^a-zA-Z\s'-]/g, "");
+  const isIntroSlide = slide.id === "000";
+  const effectiveTextAlign = isIntroSlide
+    ? introHoverSide === "right"
+      ? "left"
+      : introHoverSide === "left"
+        ? "right"
+        : "center"
+    : textAlign;
+  const introTitleStyleOverride = useMemo(
+    () =>
+      isIntroSlide
+        ? {
+            transform:
+              introHoverSide === "right"
+                ? "translateX(-40px)"
+                : introHoverSide === "left"
+                  ? "translateX(40px)"
+                  : "translateX(0)",
+          }
+        : undefined,
+    [isIntroSlide, introHoverSide]
+  );
+  const decoratedSlide = isIntroSlide
+    ? {
+        ...slide,
+        decorations: {
+          left:
+            introHoverSide === "right" ? undefined : slide.decorations?.left,
+          right:
+            introHoverSide === "left" ? undefined : slide.decorations?.right,
+        },
+      }
+    : slide;
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -187,32 +221,51 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-white text-[#1A1B1C]">
-      <ScreenDecorations slide={slide} show={decorationsLayer === "screen"} />
+      <ScreenDecorations slide={decoratedSlide} show={decorationsLayer === "screen"} />
 
       <div className="relative z-10 flex min-h-screen w-full flex-col">
         <Header onLogoClick={() => setActiveIndex(0)} slideId={slide.id} />
 
         <OverlayImages overlays={slide.overlays} />
 
-        {slide.backButton && !hasFooterButtons && (
+        {slide.backButton && !hasFooterButtons && !(isIntroSlide && introHoverSide === "right") && (
           <BackButton
             button={slide.backButton}
-            isFirst={isFirst}
+            isFirst={isFirst && !isIntroSlide}
             onClick={() =>
               maybeNavigate(() =>
                 setActiveIndex(getBackNavigationIndex())
               )
             }
+            onMouseEnter={() => isIntroSlide && setIntroHoverSide("left")}
+            onMouseLeave={() => isIntroSlide && setIntroHoverSide(null)}
           />
         )}
 
-        {slide.nextButton && !hasFooterButtons && (
+        {slide.nextButton && !hasFooterButtons && !(isIntroSlide && introHoverSide === "left") && (
           <NextButton
             button={slide.nextButton}
             isLast={isLast}
-            onMouseEnter={() => slide.id === "001" && setShowNextButtonChevrons(true)}
-            onMouseLeave={() => setShowNextButtonChevrons(false)}
+            onMouseEnter={() => {
+              if (isIntroSlide) {
+                setIntroHoverSide("right");
+              }
+              if (slide.id === "001") {
+                setShowNextButtonChevrons(true);
+              }
+            }}
+            onMouseLeave={() => {
+              if (isIntroSlide) {
+                setIntroHoverSide(null);
+              }
+              setShowNextButtonChevrons(false);
+            }}
             onClick={() => {
+              const targetId = slide.nextButton?.navigateTo;
+              if (targetId) {
+                maybeNavigate(() => navigateToSlideId(targetId));
+                return;
+              }
               const newIndex = Math.min(slides.length - 1, activeIndex + 1);
               maybeNavigate(() => setActiveIndex(newIndex));
             }}
@@ -315,12 +368,13 @@ export default function Home() {
           ) : (
             <SlideContent
               slide={slide}
-              textAlign={textAlign}
+              textAlign={effectiveTextAlign}
               isNameSlide={isNameSlide}
               isLoadingLocation={isLoadingLocation}
               isSubmitting={isSubmitting}
               submitError={submitError}
               inputValue={isLocationSlide ? location : name}
+              titleStyleOverride={introTitleStyleOverride}
               onInputChange={(event) => {
                 const sanitized = sanitizeText(event.target.value);
                 if (isLocationSlide) {
@@ -334,7 +388,7 @@ export default function Home() {
           )}
 
           <ContentDecorations
-            slide={slide}
+            slide={decoratedSlide}
             show={decorationsLayer !== "screen"}
             showChevrons={showNextButtonChevrons}
           />

@@ -49,7 +49,8 @@ export default function AnalysisCategoriesLayout({
           <button
             type="button"
             onClick={onSelectSkinTypeDetails}
-            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition hover:bg-[#E1E1E2] cursor-pointer"
+            disabled
+            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition cursor-not-allowed opacity-50"
             aria-label="Skin Type Details"
           >
             <span className="rotate-45 text-center text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1B1C] px-2">
@@ -77,7 +78,8 @@ export default function AnalysisCategoriesLayout({
           <button
             type="button"
             onClick={onSelectWeather}
-            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition hover:bg-[#E1E1E2] cursor-pointer"
+            disabled
+            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition cursor-not-allowed opacity-50"
             aria-label="Weather"
           >
             <span className="rotate-45 text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1B1C]">

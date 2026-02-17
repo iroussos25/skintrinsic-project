@@ -103,6 +103,40 @@ body {
   animation: skeletonShimmer 1.4s ease-in-out infinite;
 }
 
+/* Intro title animations - word 0 */
+.intro-title-word-0-left {
+  animation: titleSlideLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+.intro-title-word-0-right {
+  animation: titleSlideRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+.intro-title-word-0-return-left {
+  animation: titleSlideLeftReturn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+.intro-title-word-0-return-right {
+  animation: titleSlideRightReturn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+/* Intro title animations - word 1 (200ms delay) */
+.intro-title-word-1-left {
+  animation: titleSlideLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 200ms forwards !important;
+}
+
+.intro-title-word-1-right {
+  animation: titleSlideRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 200ms forwards !important;
+}
+
+.intro-title-word-1-return-left {
+  animation: titleSlideLeftReturn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 200ms forwards !important;
+}
+
+.intro-title-word-1-return-right {
+  animation: titleSlideRightReturn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 200ms forwards !important;
+}
+
 /* Staggered chevron pulse animations */
 .chevron-pulse-1 {
   animation: slideInChevron 2s ease-in-out 0s forwards, pulseChevron 1s ease-in-out 2s infinite;
@@ -117,11 +151,54 @@ body {
 }
 
 /* Slide transition animations */
-.animate-slide-in-right {
-  animation: slideInRight 0.8s ease-in-out;
+@keyframes slideInRight {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-.animate-slide-in-left {
-  animation: slideInLeft 0.8s ease-in-out;
+/* Intro title word animations */
+@keyframes titleSlideLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(40px);
+  }
 }
 
+@keyframes titleSlideRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes titleSlideLeftReturn {
+  from {
+    transform: translateX(40px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes titleSlideRightReturn {
+  from {
+    transform: translateX(-40px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */

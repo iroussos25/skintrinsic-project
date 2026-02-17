@@ -27,7 +27,7 @@ export type Slide = {
   body?: string;
   stats?: string[];
   accent?: string;
-  textAlign?: "left" | "center";
+  textAlign?: "left" | "center" | "right";
   kickerPosition?: "default" | "top-left" | "top-right";
   kickerStyle?: React.CSSProperties;
   titleStyle?: React.CSSProperties;
@@ -62,7 +62,7 @@ export const slides: Slide[] = [
     accent: "#ff6f59",
     textAlign: "center",
     backButton: { text: "DISCOVER A.I." },
-    nextButton: { text: "TAKE TEST" },
+    nextButton: { text: "TAKE TEST", navigateTo: "002" },
     footerContent: "text",
     decorations: {
       left: {
@@ -90,27 +90,6 @@ export const slides: Slide[] = [
           "absolute left-1/2 top-[70%] z-40 -translate-x-1/2 -translate-y-1/2 translate-x-[220px] opacity-50",
       },
     ],
-  },
-  {
-    id: "001",
-    kicker: "",
-    title: "Sophisticated skincare",
-    body: "",
-    stats: [""],
-    accent: "#2f80ed",
-    textAlign: "left",
-    backButton: undefined,
-    nextButton: { text: "TAKE TEST" },
-    footerContent: "text",
-    decorations: {
-      right: {
-        src: "/right-rect.svg",
-        alt: "right decoration",
-        width: 301,
-        height: 301,
-        className: "absolute right-0 top-1/2 -translate-y-[calc(50%+293px)]",
-      },
-    },
   },
   {
     id: "002",
@@ -247,34 +226,6 @@ export const slides: Slide[] = [
     },
   },
   {
-    id: "003",
-    kicker: "Execution",
-    title: "TESTING",
-    body:
-      "Adding a slide is just adding data. The deck can scale to new sections without duplicating layout code or design tokens.",
-    stats: ["Data-driven", "One component", "Fast iteration"],
-    accent: "#2d9cdb",
-    backButton: { text: "DISCOVER A.I." },
-    nextButton: undefined,
-    footerContent: "text",
-    decorations: {
-      left: {
-        src: "/left-rect.svg",
-        alt: "left decoration",
-        width: 64,
-        height: 64,
-        className: "absolute left-0",
-      },
-      right: {
-        src: "/right-rect.svg",
-        alt: "right decoration",
-        width: 64,
-        height: 64,
-        className: "absolute right-0",
-      },
-    },
-  },
-  {
     id: "005",
     backButton: { text: "BACK", navigateTo: "504", position: "bottom-left" },
     nextButton: undefined,
@@ -346,43 +297,6 @@ export const slides: Slide[] = [
     customComponent: "demographics",
   },
   {
-    id: "008",
-    kicker: "A.I. ANALYSIS",
-    kickerPosition: "top-left",
-    kickerStyle: {
-      position: "absolute",
-      top: "86px",
-      left: "32px",
-      fontWeight: 700,
-    },
-    title: "SKIN TYPE",
-    textAlign: "left",
-    titleStyle: {
-      position: "absolute",
-      top: "120px",
-      left: "32px",
-      fontSize: "72px",
-      fontWeight: 400,
-      lineHeight: "72px",
-    },
-    body: "SKIN-RELATED CHARACTERISTICS",
-    bodyStyle: {
-      position: "absolute",
-      top: "210px",
-      left: "32px",
-      fontSize: "14px",
-      fontWeight: 400,
-      lineHeight: "24px",
-      color: "#1A1B1C",
-      maxWidth: "520px",
-      textAlign: "left",
-    },
-    backButton: { text: "back", navigateTo: "006" },
-    resetButton: { text: "RESET", navigateTo: "006" },
-    confirmButton: { text: "CONFIRM" },
-    footerContent: "button",
-  },
-  {
     id: "009",
     kicker: "A.I. ANALYSIS",
     kickerPosition: "top-left",
@@ -419,43 +333,6 @@ export const slides: Slide[] = [
     confirmButton: { text: "CONFIRM" },
     footerContent: "button",
     customComponent: "cosmeticConcerns",
-  },
-  {
-    id: "010",
-    kicker: "A.I. ANALYSIS",
-    kickerPosition: "top-left",
-    kickerStyle: {
-      position: "absolute",
-      top: "86px",
-      left: "32px",
-      fontWeight: 700,
-    },
-    title: "WEATHER",
-    textAlign: "left",
-    titleStyle: {
-      position: "absolute",
-      top: "120px",
-      left: "32px",
-      fontSize: "72px",
-      fontWeight: 400,
-      lineHeight: "72px",
-    },
-    body: "WEATHER CONDITIONS IN YOUR LOCATION",
-    bodyStyle: {
-      position: "absolute",
-      top: "210px",
-      left: "32px",
-      fontSize: "14px",
-      fontWeight: 400,
-      lineHeight: "24px",
-      color: "#1A1B1C",
-      maxWidth: "520px",
-      textAlign: "left",
-    },
-    backButton: { text: "back", navigateTo: "006" },
-    resetButton: { text: "RESET", navigateTo: "006" },
-    confirmButton: { text: "CONFIRM" },
-    footerContent: "button",
   },
 ];
 

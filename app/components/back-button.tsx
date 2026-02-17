@@ -5,9 +5,17 @@ type BackButtonProps = {
   button: ButtonConfig;
   isFirst: boolean;
   onClick: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 
-export default function BackButton({ button, isFirst, onClick }: BackButtonProps) {
+export default function BackButton({
+  button,
+  isFirst,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+}: BackButtonProps) {
   const getPositionClass = () => {
     switch (button.position) {
       case "bottom-left":
@@ -19,12 +27,18 @@ export default function BackButton({ button, isFirst, onClick }: BackButtonProps
     }
   };
 
+  const isDisabled = isFirst || !button.navigateTo;
+
   return (
-    <div className={`${getPositionClass()} transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40`}>
+    <div
+      className={`${getPositionClass()} transition hover:opacity-80 ${isDisabled ? "cursor-not-allowed opacity-40" : ""}`}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <button
         onClick={onClick}
-        disabled={isFirst}
-        className="cursor-pointer transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+        disabled={isDisabled}
+        className={`transition hover:opacity-80 ${isDisabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
       >
         <Image src="/back.svg" alt="back" width={44} height={44} />
       </button>
