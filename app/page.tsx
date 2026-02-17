@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "./components/footer";
 import Header from "./components/header";
 import ConfirmDialog from "./components/confirm-dialog";
@@ -13,6 +13,8 @@ import SlideContent from "./components/slide-content";
 import ContentDecorations from "./components/content-decorations";
 import TwoColumnImageLayout from "./components/two-column-image-layout";
 import AnalysisCategoriesLayout from "./components/analysis-categories-layout";
+import DemographicsLayout from "./components/demographics-layout";
+import CosmeticConcernsLayout from "./components/cosmetic-concerns-layout";
 import SlideTransitionWrapper from "./components/slide-transition-wrapper";
 import { slides } from "./data/slides";
 
@@ -30,6 +32,14 @@ export default function Home() {
     callback: () => void;
   } | null>(null);
   const [previousIndex, setPreviousIndex] = useState(0);
+  const [analysisData, setAnalysisData] = useState<{
+    race: Record<string, number>;
+    age: Record<string, number>;
+    gender: Record<string, number>;
+  } | null>(null);
+  const [selectedAnalysisEntries, setSelectedAnalysisEntries] = useState<Record<number, string>>({});
+  const resetAnalysisDataRef = useRef<(() => void) | null>(null);
+  const confirmAnalysisDataRef = useRef<(() => void) | null>(null);
 
   const slide = useMemo(() => slides[activeIndex], [activeIndex]);
   const isFirst = activeIndex === 0;
@@ -43,6 +53,7 @@ export default function Home() {
   const isLocationSlide = slide.id === "504";
   const isLoadingLocation = isLocationSlide && isSubmitting;
   const hasUnsavedData = name.trim().length > 0 && !isSubmitting && !hasSubmittedData;
+  const showAIWrongText = ["007", "008", "009", "010"].includes(slide.id);
   const sanitizeText = (value: string) =>
     value.replace(/[^a-zA-Z\s'-]/g, "");
 
@@ -240,12 +251,61 @@ export default function Home() {
                 }
               />
             </>
+          ) : slide.customComponent === "demographics" ? (
+            <>
+              {slide.kicker && slide.kickerPosition === "top-left" && (
+                <p className="text-neutral-600" style={slide.kickerStyle}>
+                  {slide.kicker}
+                </p>
+              )}
+              {slide.title && (
+                <h1 className="text-[#1A1B1C]" style={slide.titleStyle}>
+                  {slide.title}
+                </h1>
+              )}
+              {slide.body && (
+                <p className="text-[#1A1B1C]" style={slide.bodyStyle}>
+                  {slide.body}
+                </p>
+              )}
+              <DemographicsLayout 
+                analysisData={analysisData}
+                selectedEntries={selectedAnalysisEntries}
+                setSelectedEntries={setSelectedAnalysisEntries}
+                resetDataRef={resetAnalysisDataRef}
+                confirmDataRef={confirmAnalysisDataRef}
+              />
+            </>
+          ) : slide.customComponent === "cosmeticConcerns" ? (
+            <>
+              {slide.kicker && slide.kickerPosition === "top-left" && (
+                <p className="text-neutral-600" style={slide.kickerStyle}>
+                  {slide.kicker}
+                </p>
+              )}
+              {slide.title && (
+                <h1 className="text-[#1A1B1C]" style={slide.titleStyle}>
+                  {slide.title}
+                </h1>
+              )}
+              {slide.body && (
+                <p className="text-[#1A1B1C]" style={slide.bodyStyle}>
+                  {slide.body}
+                </p>
+              )}
+              <CosmeticConcernsLayout
+                analysisData={analysisData}
+                selectedEntries={selectedAnalysisEntries}
+                setSelectedEntries={setSelectedAnalysisEntries}
+              />
+            </>
           ) : slide.twoColumnImages ? (
             <TwoColumnImageLayout
               leftImageSrc={slide.twoColumnImages.leftImageSrc}
               leftImageAlt={slide.twoColumnImages.leftImageAlt}
               rightImageSrc={slide.twoColumnImages.rightImageSrc}
               rightImageAlt={slide.twoColumnImages.rightImageAlt}
+              onAnalysisDataReceived={(data) => setAnalysisData(data)}
               onNavigateToNext={() => {
                 maybeNavigate(() =>
                   setActiveIndex((prev) => Math.min(slides.length - 1, prev + 1))
@@ -282,6 +342,7 @@ export default function Home() {
 
         <Footer
           footerContent={slide.footerContent}
+          showAIWrongText={showAIWrongText}
           onBack={
             hasFooterButtons && slide.backButton
               ? () =>
@@ -304,24 +365,27 @@ export default function Home() {
           }
           onReset={
             hasFooterButtons && slide.resetButton
-              ? () =>
-                  maybeNavigate(() =>
-                    slide.resetButton?.navigateTo
-                      ? navigateToSlideId(slide.resetButton.navigateTo)
-                      : navigateToSlideId("006")
-                  )
+              ? () => {
+                  if (resetAnalysisDataRef.current) {
+                    resetAnalysisDataRef.current();
+                  }
+                }
               : undefined
           }
           onConfirm={
             hasFooterButtons && slide.confirmButton
-              ? () =>
+              ? () => {
+                  if (confirmAnalysisDataRef.current) {
+                    confirmAnalysisDataRef.current();
+                  }
                   maybeNavigate(() =>
                     slide.confirmButton?.navigateTo
                       ? navigateToSlideId(slide.confirmButton.navigateTo)
                       : setActiveIndex(
                           Math.min(slides.length - 1, activeIndex + 1)
                         )
-                  )
+                  );
+                }
               : undefined
           }
           backButtonText={slide.backButton?.text}

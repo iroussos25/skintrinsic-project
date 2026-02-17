@@ -10,6 +10,7 @@ type FooterProps = {
 	nextButtonText?: string;
 	resetButtonText?: string;
 	confirmButtonText?: string;
+	showAIWrongText?: boolean;
 };
 
 export default function Footer({
@@ -22,6 +23,7 @@ export default function Footer({
 	nextButtonText = "NEXT",
 	resetButtonText = "RESET",
 	confirmButtonText = "CONFIRM",
+	showAIWrongText = false,
 }: FooterProps) {
 	if (footerContent === "none") {
 		return null;
@@ -48,6 +50,13 @@ export default function Footer({
 						</button>
 					)}
 				</div>
+				{showAIWrongText && (
+					<div className="flex-1 flex items-center justify-center">
+						<span style={{ fontSize: "16px", fontWeight: 400, color: "#A0A4AB" }}>
+							If A.I. is wrong, select the correct one.
+						</span>
+					</div>
+				)}
 				{(footerContent === "button" || footerContent === "both") && (onReset || onConfirm || onNext) && (
 					<div className="flex items-center gap-6">
 						{onReset && (

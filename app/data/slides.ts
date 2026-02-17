@@ -49,7 +49,7 @@ export type Slide = {
     rightImageSrc: string;
     rightImageAlt: string;
   };
-  customComponent?: "analysisCategories";
+  customComponent?: "analysisCategories" | "demographics" | "cosmeticConcerns";
 };
 
 export const slides: Slide[] = [
@@ -343,6 +343,7 @@ export const slides: Slide[] = [
     resetButton: { text: "RESET", navigateTo: "006" },
     confirmButton: { text: "CONFIRM" },
     footerContent: "button",
+    customComponent: "demographics",
   },
   {
     id: "008",
@@ -417,6 +418,7 @@ export const slides: Slide[] = [
     resetButton: { text: "RESET", navigateTo: "006" },
     confirmButton: { text: "CONFIRM" },
     footerContent: "button",
+    customComponent: "cosmeticConcerns",
   },
   {
     id: "010",

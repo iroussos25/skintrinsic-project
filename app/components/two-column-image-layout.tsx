@@ -7,6 +7,7 @@ import ImageUploadModal from "./image-upload-modal";
 import CameraCaptureModal from "./camera-capture-modal";
 import CameraSetupLoading from "./camera-setup-loading";
 import PreparingAnalysisLoading from "./preparing-analysis-loading";
+import { usePhaseAnalysis } from "../hooks/usePhaseAnalysis";
 
 type TwoColumnImageLayoutProps = {
   leftImageSrc: string;
@@ -14,6 +15,11 @@ type TwoColumnImageLayoutProps = {
   rightImageSrc: string;
   rightImageAlt: string;
   onNavigateToNext?: () => void;
+  onAnalysisDataReceived?: (data: {
+    race: Record<string, number>;
+    age: Record<string, number>;
+    gender: Record<string, number>;
+  }) => void;
 };
 
 export default function TwoColumnImageLayout({
@@ -22,7 +28,9 @@ export default function TwoColumnImageLayout({
   rightImageSrc,
   rightImageAlt,
   onNavigateToNext,
+  onAnalysisDataReceived,
 }: TwoColumnImageLayoutProps) {
+  const { uploadImage } = usePhaseAnalysis();
   const [hoveredSide, setHoveredSide] = useState<"left" | "right" | null>(null);
   const [showCameraDialog, setShowCameraDialog] = useState(false);
   const [showGalleryDialog, setShowGalleryDialog] = useState(false);
@@ -31,28 +39,16 @@ export default function TwoColumnImageLayout({
   const [showCameraCapture, setShowCameraCapture] = useState(false);
   const [showPreparingAnalysis, setShowPreparingAnalysis] = useState(false);
 
-  const handleImageUpload = async (base64Image: string) => {
-    const response = await fetch(
-      "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ image: base64Image }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Upload failed: ${response.statusText}`);
+  const handleImageUpload = async (base64Image: string): Promise<void> => {
+    const analysisData = await uploadImage(base64Image);
+    
+    // Store the analysis data if callback is provided
+    if (onAnalysisDataReceived) {
+      onAnalysisDataReceived(analysisData);
     }
-
-    const result = await response.json();
     
     // Show preparing analysis screen after successful upload
     setShowPreparingAnalysis(true);
-    
-    return result;
   };
   const isLeftHovered = hoveredSide === "left";
   const isRightHovered = hoveredSide === "right";
