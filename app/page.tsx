@@ -38,6 +38,7 @@ export default function Home() {
     activeIndex > previousIndex ? "forward" : "backward";
   const textAlign = slide.textAlign ?? "center";
   const decorationsLayer = slide.decorationsLayer ?? "content";
+  const hasFooterButtons = slide.footerContent === "button" || slide.footerContent === "both";
   const isNameSlide = ["002", "504"].includes(slide.id);
   const isLocationSlide = slide.id === "504";
   const isLoadingLocation = isLocationSlide && isSubmitting;
@@ -105,6 +106,13 @@ export default function Home() {
       return targetIndex !== -1 ? targetIndex : Math.max(0, activeIndex - 1);
     }
     return Math.max(0, activeIndex - 1);
+  };
+
+  const navigateToSlideId = (targetId: string) => {
+    const targetIndex = slides.findIndex((item) => item.id === targetId);
+    if (targetIndex !== -1) {
+      setActiveIndex(targetIndex);
+    }
   };
 
   const handleNameSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -175,7 +183,7 @@ export default function Home() {
 
         <OverlayImages overlays={slide.overlays} />
 
-        {slide.backButton && (
+        {slide.backButton && !hasFooterButtons && (
           <BackButton
             button={slide.backButton}
             isFirst={isFirst}
@@ -187,7 +195,7 @@ export default function Home() {
           />
         )}
 
-        {slide.nextButton && (
+        {slide.nextButton && !hasFooterButtons && (
           <NextButton
             button={slide.nextButton}
             isLast={isLast}
@@ -217,7 +225,20 @@ export default function Home() {
                   {slide.title}
                 </h3>
               )}
-              <AnalysisCategoriesLayout />
+              <AnalysisCategoriesLayout
+                onSelectDemographics={() =>
+                  maybeNavigate(() => navigateToSlideId("007"))
+                }
+                onSelectSkinTypeDetails={() =>
+                  maybeNavigate(() => navigateToSlideId("008"))
+                }
+                onSelectCosmeticConcerns={() =>
+                  maybeNavigate(() => navigateToSlideId("009"))
+                }
+                onSelectWeather={() =>
+                  maybeNavigate(() => navigateToSlideId("010"))
+                }
+              />
             </>
           ) : slide.twoColumnImages ? (
             <TwoColumnImageLayout
@@ -261,16 +282,52 @@ export default function Home() {
 
         <Footer
           footerContent={slide.footerContent}
-          onBack={() =>
-            maybeNavigate(() =>
-              setActiveIndex(getBackNavigationIndex())
-            )
+          onBack={
+            hasFooterButtons && slide.backButton
+              ? () =>
+                  maybeNavigate(() =>
+                    setActiveIndex(getBackNavigationIndex())
+                  )
+              : undefined
           }
-          onNext={() =>
-            maybeNavigate(() =>
-              setActiveIndex(Math.min(slides.length - 1, activeIndex + 1))
-            )
+          onNext={
+            hasFooterButtons && slide.nextButton
+              ? () =>
+                  maybeNavigate(() =>
+                    slide.nextButton?.navigateTo
+                      ? navigateToSlideId(slide.nextButton.navigateTo)
+                      : setActiveIndex(
+                          Math.min(slides.length - 1, activeIndex + 1)
+                        )
+                  )
+              : undefined
           }
+          onReset={
+            hasFooterButtons && slide.resetButton
+              ? () =>
+                  maybeNavigate(() =>
+                    slide.resetButton?.navigateTo
+                      ? navigateToSlideId(slide.resetButton.navigateTo)
+                      : navigateToSlideId("006")
+                  )
+              : undefined
+          }
+          onConfirm={
+            hasFooterButtons && slide.confirmButton
+              ? () =>
+                  maybeNavigate(() =>
+                    slide.confirmButton?.navigateTo
+                      ? navigateToSlideId(slide.confirmButton.navigateTo)
+                      : setActiveIndex(
+                          Math.min(slides.length - 1, activeIndex + 1)
+                        )
+                  )
+              : undefined
+          }
+          backButtonText={slide.backButton?.text}
+          nextButtonText={slide.nextButton?.text}
+          resetButtonText={slide.resetButton?.text}
+          confirmButtonText={slide.confirmButton?.text}
         />
 
         <ConfirmDialog

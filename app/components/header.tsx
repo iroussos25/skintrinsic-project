@@ -4,7 +4,8 @@ type HeaderProps = {
 };
 
 export default function Header({ onLogoClick, slideId }: HeaderProps) {
-  const headerText = slideId === "006" ? "[ ANALYSIS ]" : "[ INTRO ]";
+  const isAnalysisSlide = ["006", "007", "008", "009", "010"].includes(slideId ?? "");
+  const headerText = isAnalysisSlide ? "[ ANALYSIS ]" : "[ INTRO ]";
 
 	return (
     <header className="flex flex-wrap items-center justify-between gap-4 bg-white px-8 py-5">

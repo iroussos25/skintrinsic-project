@@ -4,9 +4,25 @@ type FooterProps = {
 	footerContent?: "text" | "button" | "both" | "none";
 	onBack?: () => void;
 	onNext?: () => void;
+	onReset?: () => void;
+	onConfirm?: () => void;
+	backButtonText?: string;
+	nextButtonText?: string;
+	resetButtonText?: string;
+	confirmButtonText?: string;
 };
 
-export default function Footer({ footerContent = "text", onBack, onNext }: FooterProps) {
+export default function Footer({
+	footerContent = "text",
+	onBack,
+	onNext,
+	onReset,
+	onConfirm,
+	backButtonText = "BACK",
+	nextButtonText = "NEXT",
+	resetButtonText = "RESET",
+	confirmButtonText = "CONFIRM",
+}: FooterProps) {
 	if (footerContent === "none") {
 		return null;
 	}
@@ -27,21 +43,45 @@ export default function Footer({ footerContent = "text", onBack, onNext }: Foote
 						>
 							<Image src="/back.svg" alt="back" width={44} height={44} />
 							<span className="font-semibold text-[#1A1B1C]" style={{ fontSize: "14px" }}>
-								BACK
+								{backButtonText}
 							</span>
 						</button>
 					)}
 				</div>
-				{(footerContent === "button" || footerContent === "both") && onNext && (
-					<button
-						onClick={onNext}
-						className="flex cursor-pointer items-center gap-2 transition hover:opacity-80"
-					>
-						<span className="font-semibold text-[#1A1B1C]" style={{ fontSize: "14px" }}>
-							GET SUMMARY
-						</span>
-						<Image src="/next-slide.svg" alt="next" width={44} height={44} />
-					</button>
+				{(footerContent === "button" || footerContent === "both") && (onReset || onConfirm || onNext) && (
+					<div className="flex items-center gap-6">
+						{onReset && (
+							<button
+								onClick={onReset}
+								className="flex h-8.75 w-18.25 cursor-pointer items-center justify-center gap-2 border border-[#1A1B1C] px-4 pb-2.5 pt-2.25 transition hover:opacity-80"
+							>
+								<span className="font-semibold text-[#1A1B1C]" style={{ fontSize: "14px" }}>
+									{resetButtonText}
+								</span>
+							</button>
+						)}
+						{onConfirm && (
+							<button
+								onClick={onConfirm}
+								className="flex h-8.75 w-23.75 cursor-pointer items-center justify-center gap-2 bg-[#1A1B1C] px-4 pb-2.5 pt-2.25 transition hover:opacity-80"
+							>
+								<span className="font-semibold text-white" style={{ fontSize: "14px" }}>
+									{confirmButtonText}
+								</span>
+							</button>
+						)}
+						{!onReset && !onConfirm && onNext && (
+							<button
+								onClick={onNext}
+								className="flex cursor-pointer items-center gap-2 transition hover:opacity-80"
+							>
+								<span className="font-semibold text-[#1A1B1C]" style={{ fontSize: "14px" }}>
+									{nextButtonText}
+								</span>
+								<Image src="/next-slide.svg" alt="next" width={44} height={44} />
+							</button>
+						)}
+					</div>
 				)}
 			</div>
 		</footer>
