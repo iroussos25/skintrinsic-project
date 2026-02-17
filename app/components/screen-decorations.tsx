@@ -9,8 +9,11 @@ type ScreenDecorationsProps = {
 export default function ScreenDecorations({ slide, show }: ScreenDecorationsProps) {
   if (!show) return null;
 
+  // Hide decorations on intro slide for mobile
+  const isIntroSlide = slide.id === "000";
+
   return (
-    <div className="pointer-events-none absolute inset-0 z-0">
+    <div className={`pointer-events-none absolute inset-0 z-0 ${isIntroSlide ? "hidden sm:block" : ""}`}>
       {slide.decorations?.left && (
         <Image
           src={slide.decorations.left.src}

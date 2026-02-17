@@ -56,7 +56,7 @@ export default function SlideContent({
         )}
 
         {slide.titleStyle ? (
-          <h1 className="text-[#1A1B1C]" style={slide.titleStyle}>
+          <h1 className="hidden sm:block text-[#1A1B1C]" style={slide.titleStyle}>
             {slide.title}
           </h1>
         ) : slide.id === "000" && titleStyleOverride ? (
@@ -112,16 +112,16 @@ export default function SlideContent({
           <h1
             className={
               textAlign === "left"
-                ? "max-w-5xl leading-none"
+                ? "max-w-5xl leading-none px-4 sm:px-0"
                 : textAlign === "right"
-                  ? "ml-auto max-w-5xl leading-none"
-                  : "mx-auto max-w-5xl leading-none"
+                  ? "ml-auto max-w-5xl leading-none px-4 sm:px-0"
+                  : "mx-auto max-w-5xl leading-none px-4 sm:px-0"
             }
             style={{
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 300,
-              fontSize: "clamp(48px, 12vw, 128px)",
-              lineHeight: "clamp(48px, 12vw, 120px)",
+              fontSize: "clamp(32px, 8vw, 128px)",
+              lineHeight: "clamp(32px, 8vw, 120px)",
               letterSpacing: "-0.07em",
               textAlign,
               color: "#1A1B1C",

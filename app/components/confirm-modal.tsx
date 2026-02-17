@@ -50,7 +50,7 @@ export default function ConfirmModal({
       onClick={onCancel}
     >
       <div
-        className="w-90 rounded-lg border border-[#E5E7EB] bg-white p-6 text-[#1A1B1C] shadow-lg"
+        className="w-full max-w-sm rounded-lg border border-[#E5E7EB] bg-white px-4 py-6 sm:px-6 md:px-8 text-[#1A1B1C] shadow-lg"
         onClick={(event) => event.stopPropagation()}
       >
         <p className="text-sm uppercase tracking-[0.2em]">{title}</p>

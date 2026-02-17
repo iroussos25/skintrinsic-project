@@ -39,7 +39,7 @@ export default function PreparingAnalysisLoading({
       <div className="flex flex-col items-center justify-center">
         {/* Rombuses decoration */}
         <div className="relative">
-          <div className="relative h-101.25 w-101.25">
+          <div className="relative h-101.25 w-101.25 sm:h-80 sm:w-80 md:h-101.25 md:w-101.25">
             <Image
               src="/rombusescenter.svg"
               alt="decoration"

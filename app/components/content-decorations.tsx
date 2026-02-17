@@ -14,8 +14,12 @@ export default function ContentDecorations({
 }: ContentDecorationsProps) {
   if (!show) return null;
 
+  // Hide decorations on intro slide for mobile
+  const isIntroSlide = slide.id === "000";
+  const hideDecorations = isIntroSlide ? "hidden sm:flex" : "flex";
+
   return (
-    <div className="relative flex items-center justify-between pb-8">
+    <div className={`relative ${hideDecorations} items-center justify-between pb-8`}>
       {slide.decorations?.left && (
         <Image
           src={slide.decorations.left.src}

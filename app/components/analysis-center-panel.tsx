@@ -71,8 +71,10 @@ export default function AnalysisCenterPanel({
               position: "absolute",
               bottom: "20px",
               right: "20px",
-              width: "clamp(200px, 25vw, 300px)",
-              height: "clamp(200px, 25vw, 300px)",
+              width: "clamp(120px, 20vw, 300px)",
+              height: "clamp(120px, 20vw, 300px)",
+              maxWidth: "calc(100% - 40px)",
+              overflow: "hidden",
             }}
           >
             <CircularConfidence percentage={displayConfidence} />

@@ -30,12 +30,11 @@ export default function AnalysisCategoriesLayout({
 
       {/* Four rombuses forming a diamond */}
       <div className="relative">
-        {/* Top rombus - Demographics */}
         <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
           <button
             type="button"
             onClick={onSelectDemographics}
-            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition hover:bg-[#E1E1E2] cursor-pointer"
+            className="flex h-28 w-28 sm:h-38.5 sm:w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition hover:bg-[#E1E1E2] cursor-pointer"
             aria-label="Demographics"
           >
             <span className="rotate-45 text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1B1C]">
@@ -50,7 +49,7 @@ export default function AnalysisCategoriesLayout({
             type="button"
             onClick={onSelectSkinTypeDetails}
             disabled
-            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition cursor-not-allowed opacity-50"
+            className="flex h-28 w-28 sm:h-38.5 sm:w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition cursor-not-allowed opacity-50"
             aria-label="Skin Type Details"
           >
             <span className="rotate-45 text-center text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1B1C] px-2">
@@ -64,7 +63,7 @@ export default function AnalysisCategoriesLayout({
           <button
             type="button"
             onClick={onSelectCosmeticConcerns}
-            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition hover:bg-[#E1E1E2] cursor-pointer"
+            className="flex h-28 w-28 sm:h-38.5 sm:w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition hover:bg-[#E1E1E2] cursor-pointer"
             aria-label="Cosmetic Concerns"
           >
             <span className="rotate-45 text-center text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1B1C] px-2">
@@ -79,7 +78,7 @@ export default function AnalysisCategoriesLayout({
             type="button"
             onClick={onSelectWeather}
             disabled
-            className="flex h-38.5 w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition cursor-not-allowed opacity-50"
+            className="flex h-28 w-28 sm:h-38.5 sm:w-38.5 -rotate-45 items-center justify-center border-2 border-[#1A1B1C] bg-[#F3F3F4] transition cursor-not-allowed opacity-50"
             aria-label="Weather"
           >
             <span className="rotate-45 text-xs font-semibold uppercase tracking-[0.15em] text-[#1A1B1C]">
@@ -89,7 +88,7 @@ export default function AnalysisCategoriesLayout({
         </div>
 
         {/* Container for proper spacing */}
-        <div className="h-55.5 w-55.5" />
+        <div className="h-40 w-40 sm:h-55.5 sm:w-55.5" />
       </div>
     </div>
   );

@@ -114,25 +114,27 @@ export default function TwoColumnImageLayout({
       />
       {/* Left Half */}
       <div
-        className="relative flex w-full sm:w-1/2 items-center justify-center"
+        className="relative flex w-full sm:w-1/2 items-center justify-center flex-col sm:flex-row"
         onMouseEnter={() => setHoveredSide("left")}
         onMouseLeave={() => setHoveredSide(null)}
       >
-        <div className="relative w-full h-full flex items-center justify-center">
-          {/* Background rombus decoration */}
+        <div className="relative w-full h-full flex flex-col sm:flex-row items-center justify-center">
+          {/* Background rombus decoration - hidden on mobile */}
           <Image
             src="/rombusescenter.svg"
             alt="left background decoration"
             width={405}
             height={405}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 brightness-80 contrast-110"
+            className="hidden sm:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 brightness-80 contrast-110"
           />
+          {/* Line decoration - hidden on mobile */}
           <div
-            className="absolute left-1/2 top-1/2 h-px w-21.5 translate-x-[calc(-50%+61px)] translate-y-[calc(-50%-61px)] rotate-135 origin-center bg-[#1A1B1C]"
+            className="hidden sm:block absolute left-1/2 top-1/2 h-px w-21.5 translate-x-[calc(-50%+61px)] translate-y-[calc(-50%-61px)] rotate-135 origin-center bg-[#1A1B1C]"
             aria-hidden="true"
           />
+          {/* Label - repositioned for mobile */}
           <span
-            className={`absolute left-1/2 top-1/2 translate-x-[calc(-50%+102px)] translate-y-[calc(-50%-102px)] text-[10px] uppercase tracking-[0.35em] text-[#1A1B1C] transition duration-300 ${
+            className={`sm:absolute sm:left-1/2 sm:top-1/2 sm:translate-x-[calc(-50%+102px)] sm:translate-y-[calc(-50%-102px)] text-[10px] uppercase tracking-[0.35em] text-[#1A1B1C] transition duration-300 mb-3 sm:mb-0 text-center ${
               isLeftDimmed ? "opacity-40" : "opacity-100"
             }`}
           >
@@ -156,25 +158,27 @@ export default function TwoColumnImageLayout({
 
       {/* Right Half */}
       <div
-        className="relative flex w-full sm:w-1/2 items-center justify-center"
+        className="relative flex w-full sm:w-1/2 items-center justify-center flex-col sm:flex-row"
         onMouseEnter={() => setHoveredSide("right")}
         onMouseLeave={() => setHoveredSide(null)}
       >
-        <div className="relative w-full h-full flex items-center justify-center">
-          {/* Background rombus decoration */}
+        <div className="relative w-full h-full flex flex-col sm:flex-row items-center justify-center">
+          {/* Background rombus decoration - hidden on mobile */}
           <Image
             src="/rombusescenter.svg"
             alt="right background decoration"
             width={405}
             height={405}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 brightness-80 contrast-110"
+            className="hidden sm:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 brightness-80 contrast-110"
           />
+          {/* Line decoration - hidden on mobile */}
           <div
-            className="absolute left-1/2 top-1/2 h-px w-21.5 translate-x-[calc(-50%-88px)] translate-y-[calc(-50%+48px)] rotate-135 origin-center bg-[#1A1B1C]"
+            className="hidden sm:block absolute left-1/2 top-1/2 h-px w-21.5 translate-x-[calc(-50%-88px)] translate-y-[calc(-50%+48px)] rotate-135 origin-center bg-[#1A1B1C]"
             aria-hidden="true"
           />
+          {/* Label - repositioned for mobile */}
           <span
-            className={`absolute left-1/2 top-1/2 translate-x-[calc(-50%-167px)] translate-y-[calc(-50%+92px)] text-[10px] uppercase tracking-[0.35em] text-[#1A1B1C] transition duration-300 ${
+            className={`sm:absolute sm:left-1/2 sm:top-1/2 sm:translate-x-[calc(-50%-167px)] sm:translate-y-[calc(-50%+92px)] text-[10px] uppercase tracking-[0.35em] text-[#1A1B1C] transition duration-300 mt-3 sm:mt-0 text-center ${
               isRightDimmed ? "opacity-40" : "opacity-100"
             }`}
           >

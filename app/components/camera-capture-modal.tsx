@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 type CameraCaptureModalProps = {
   isOpen: boolean;
@@ -38,8 +38,16 @@ export default function CameraCaptureModal({
       return;
     }
 
+    // Stop existing stream before requesting a new one (e.g., when switching facingMode)
+    const stopExistingStream = () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
+
     const startCamera = async () => {
       try {
+        setError(null); // Clear previous errors
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: facingMode },
           audio: false,
@@ -49,15 +57,30 @@ export default function CameraCaptureModal({
           videoRef.current.srcObject = mediaStream;
         }
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to access camera. Please check permissions."
-        );
+        let errorMessage = "Failed to access camera. Please check permissions.";
+        if (err instanceof DOMException) {
+          if (err.name === "NotAllowedError" || err.message.includes("Permission denied")) {
+            errorMessage = "Camera permission denied. Please enable camera access in your browser settings and try again.";
+          } else if (err.name === "NotFoundError" || err.message.includes("NotFoundError")) {
+            errorMessage = "No camera device found. Please check that a camera is connected.";
+          } else if (err.name === "NotReadableError" || err.message.includes("NotReadableError")) {
+            errorMessage = "Camera is already in use by another application. Please close other apps using the camera and try again.";
+          }
+        } else if (err instanceof Error) {
+          errorMessage = err.message;
+        }
+        setError(errorMessage);
+        setStream(null);
       }
     };
 
-    startCamera();
+    // Stop old stream before starting new one
+    stopExistingStream();
+    
+    // Add a small delay to ensure old stream is fully released
+    const timerId = setTimeout(() => {
+      startCamera();
+    }, 100);
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -69,9 +92,12 @@ export default function CameraCaptureModal({
     document.body.style.overflow = "hidden";
 
     window.addEventListener("keydown", handleKeyDown);
+    
     return () => {
+      clearTimeout(timerId);
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleKeyDown);
+      // Stream cleanup is handled in the main if (!isOpen) block above
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, onClose, facingMode]);
@@ -80,6 +106,11 @@ export default function CameraCaptureModal({
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
     }
+    
+    return () => {
+      // Stream cleanup is handled by the main camera effect
+      // Just mark that we've cleaned up the display
+    };
   }, [stream]);
 
   // Simple face detection based on video analysis
@@ -170,6 +201,15 @@ export default function CameraCaptureModal({
     return () => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [stream]);
+
+  // Safety cleanup: ensure stream is stopped if component unmounts
+  useLayoutEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, [stream]);
@@ -268,7 +308,7 @@ export default function CameraCaptureModal({
         onClick={onClose}
       >
         <div
-          className="w-100 rounded-lg border border-[#E5E7EB] bg-white p-6 text-[#1A1B1C] shadow-lg"
+          className="w-full max-w-md rounded-lg border border-[#E5E7EB] bg-white px-4 py-6 sm:px-6 md:px-8 text-[#1A1B1C] shadow-lg"
           onClick={(event) => event.stopPropagation()}
         >
           <p className="mb-4 text-sm uppercase tracking-[0.2em]">
@@ -280,7 +320,7 @@ export default function CameraCaptureModal({
             {error && <p className="text-xs text-red-600">{error}</p>}
 
             {/* Captured image preview */}
-            <div className="relative h-80 overflow-hidden rounded-lg border border-[#E5E7EB] bg-black">
+            <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden rounded-lg border border-[#E5E7EB] bg-black">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={capturedImage}
@@ -367,7 +407,7 @@ export default function CameraCaptureModal({
       {/* Oval face guide - Center */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <div
-          className={`h-150 w-112.5 sm:h-125 sm:w-95 rounded-[50%] border-4 transition-all duration-300 ${
+          className={`h-80 w-60 sm:h-156.25 sm:w-118.75 md:h-187.5 md:w-[562.5px] rounded-[50%] border-4 transition-all duration-300 ${
             isFaceDetected
               ? "border-green-400 shadow-[0_0_30px_rgba(74,222,128,0.6)]"
               : "border-white/40"
@@ -545,7 +585,7 @@ export default function CameraCaptureModal({
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-8 bottom-8 cursor-pointer text-xs uppercase tracking-[0.2em] text-white/80 transition hover:text-white"
+        className="hidden sm:block absolute right-8 bottom-8 cursor-pointer text-xs uppercase tracking-[0.2em] text-white/80 transition hover:text-white"
       >
         Close (ESC)
       </button>

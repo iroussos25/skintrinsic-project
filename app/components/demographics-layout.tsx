@@ -70,7 +70,7 @@ export default function DemographicsLayout({
   };
 
   const buttonStyle = (index: number) => ({
-    width: "200px",
+    width: "clamp(200px, 85vw, 280px)",
     height: "clamp(80px, 100px, 120px)",
     backgroundColor: selectedButton === index ? "#000000" : "#F3F3F4",
     border: "1px solid #000000",
@@ -80,9 +80,9 @@ export default function DemographicsLayout({
   });
 
   return (
-    <div className="relative flex flex-1 items-start justify-center gap-1 px-4 sm:px-6 md:px-8" style={{ marginTop: "200px", marginBottom: "auto" }}>
+    <div className="relative flex flex-col sm:flex-row flex-1 items-center sm:items-start justify-center gap-1 px-4 sm:px-6 md:px-8" style={{ marginTop: "200px", marginBottom: "auto" }}>
       {/* Left column - 3 rectangles stacked as buttons */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-full sm:w-auto items-center sm:items-start">
         <button
           onClick={() => setSelectedButton(0)}
           style={{

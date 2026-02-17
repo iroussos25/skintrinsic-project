@@ -23,12 +23,12 @@ export default function Home() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState("");
   const [hasSubmittedData, setHasSubmittedData] = useState(false);
+  const [introHoverSide, setIntroHoverSide] = useState<"left" | "right" | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showGoodbyeDialog, setShowGoodbyeDialog] = useState(false);
   const [showNextButtonChevrons, setShowNextButtonChevrons] = useState(false);
-  const [introHoverSide, setIntroHoverSide] = useState<"left" | "right" | null>(null);
   const [pendingNavigation, setPendingNavigation] = useState<{
     callback: () => void;
   } | null>(null);
@@ -54,7 +54,7 @@ export default function Home() {
   const isLocationSlide = slide.id === "504";
   const isLoadingLocation = isLocationSlide && isSubmitting;
   const hasUnsavedData = name.trim().length > 0 && !isSubmitting && !hasSubmittedData;
-  const showAIWrongText = ["007", "008", "009", "010"].includes(slide.id);
+  const showAIWrongText = ["007", "009"].includes(slide.id);
   const sanitizeText = (value: string) =>
     value.replace(/[^a-zA-Z\s'-]/g, "");
   const isIntroSlide = slide.id === "000";
@@ -168,7 +168,7 @@ export default function Home() {
       return;
     }
 
-    setSubmitError(null);
+    setSubmitError("");
 
     if (!isLocationSlide) {
       setName(trimmedValue);
@@ -226,7 +226,7 @@ export default function Home() {
       <div className="relative z-10 flex min-h-screen w-full flex-col">
         <Header onLogoClick={() => setActiveIndex(0)} slideId={slide.id} />
 
-        <OverlayImages overlays={slide.overlays} />
+        <OverlayImages overlays={slide.overlays} slideId={slide.id} />
 
         {slide.backButton && !hasFooterButtons && !(isIntroSlide && introHoverSide === "right") && (
           <BackButton
@@ -274,7 +274,7 @@ export default function Home() {
 
         <SlideTransitionWrapper key={activeIndex} direction={navigationDirection}>
           {slide.kickerPosition === "top-left" && slide.kicker && (
-            <p className="text-neutral-600" style={slide.kickerStyle}>
+            <p className="ml-4 sm:ml-6 md:ml-8 text-neutral-600" style={slide.kickerStyle}>
               {slide.kicker}
             </p>
           )}
@@ -283,7 +283,7 @@ export default function Home() {
             <>
               {slide.title && (
                 <h3
-                  className="text-neutral-600 uppercase tracking-[0.15em] px-8"
+                  className="text-center sm:text-left text-neutral-600 uppercase tracking-[0.15em] px-8"
                   style={slide.titleStyle}
                 >
                   {slide.title}
@@ -307,12 +307,12 @@ export default function Home() {
           ) : slide.customComponent === "demographics" ? (
             <>
               {slide.kicker && slide.kickerPosition === "top-left" && (
-                <p className="text-neutral-600" style={slide.kickerStyle}>
+                <p className="ml-4 sm:ml-6 md:ml-8 text-neutral-600" style={slide.kickerStyle}>
                   {slide.kicker}
                 </p>
               )}
               {slide.title && (
-                <h1 className="text-[#1A1B1C]" style={slide.titleStyle}>
+                <h1 className="text-center sm:text-left text-[#1A1B1C]" style={slide.titleStyle}>
                   {slide.title}
                 </h1>
               )}
@@ -332,12 +332,12 @@ export default function Home() {
           ) : slide.customComponent === "cosmeticConcerns" ? (
             <>
               {slide.kicker && slide.kickerPosition === "top-left" && (
-                <p className="text-neutral-600" style={slide.kickerStyle}>
+                <p className="ml-4 sm:ml-6 md:ml-8 text-neutral-600" style={slide.kickerStyle}>
                   {slide.kicker}
                 </p>
               )}
               {slide.title && (
-                <h1 className="text-[#1A1B1C]" style={slide.titleStyle}>
+                <h1 className="text-center sm:text-left text-[#1A1B1C]" style={slide.titleStyle}>
                   {slide.title}
                 </h1>
               )}

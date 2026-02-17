@@ -25,7 +25,7 @@ export default function SlideForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="relative text-[#1A1B1C]"
+      className="relative text-[#1A1B1C] w-full flex flex-col items-center"
       style={bodyStyle}
     >
       <input
@@ -36,10 +36,18 @@ export default function SlideForm({
         autoComplete="name"
         aria-label="Enter your information"
         disabled={isSubmitting}
-        className={`h-full w-full bg-transparent text-center placeholder:text-[#1A1B1C]/60 focus:outline-none disabled:opacity-60 ${
+        className={`h-full w-full max-w-sm bg-transparent text-center placeholder:text-[#1A1B1C]/60 focus:outline-none disabled:opacity-60 ${
           isLoading ? "text-transparent caret-transparent" : ""
         }`}
       />
+      {/* Mobile submit button */}
+      <button
+        type="submit"
+        disabled={isSubmitting || !value.trim()}
+        className="sm:hidden mt-20 px-6 py-2 bg-[#1A1B1C] text-white text-xs uppercase tracking-[0.2em] rounded-full font-semibold transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
+      </button>
       {isLoading && (
         <>
           <LoadingSkeleton />
