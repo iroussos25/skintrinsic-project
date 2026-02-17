@@ -114,7 +114,7 @@ export default function TwoColumnImageLayout({
       />
       {/* Left Half */}
       <div
-        className="relative flex w-1/2 items-center justify-center"
+        className="relative flex w-full sm:w-1/2 items-center justify-center"
         onMouseEnter={() => setHoveredSide("left")}
         onMouseLeave={() => setHoveredSide(null)}
       >
@@ -156,7 +156,7 @@ export default function TwoColumnImageLayout({
 
       {/* Right Half */}
       <div
-        className="relative flex w-1/2 items-center justify-center"
+        className="relative flex w-full sm:w-1/2 items-center justify-center"
         onMouseEnter={() => setHoveredSide("right")}
         onMouseLeave={() => setHoveredSide(null)}
       >

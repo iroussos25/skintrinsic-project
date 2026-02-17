@@ -8,7 +8,7 @@ export default function Header({ onLogoClick, slideId }: HeaderProps) {
   const headerText = isAnalysisSlide ? "[ ANALYSIS ]" : "[ INTRO ]";
 
 	return (
-    <header className="flex flex-wrap items-center justify-between gap-4 bg-white px-8 py-5">
+    <header className="flex flex-wrap items-center justify-between gap-4 bg-white px-4 sm:px-6 md:px-8 py-4 sm:py-5">
       <button
         onClick={onLogoClick}
         className="flex cursor-pointer items-center gap-3 transition hover:opacity-80"

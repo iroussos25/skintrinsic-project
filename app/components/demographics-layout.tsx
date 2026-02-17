@@ -80,7 +80,7 @@ export default function DemographicsLayout({
   });
 
   return (
-    <div className="relative flex flex-1 items-start justify-center gap-1 px-8" style={{ marginTop: "200px", marginBottom: "auto" }}>
+    <div className="relative flex flex-1 items-start justify-center gap-1 px-4 sm:px-6 md:px-8" style={{ marginTop: "200px", marginBottom: "auto" }}>
       {/* Left column - 3 rectangles stacked as buttons */}
       <div className="flex flex-col gap-1">
         <button

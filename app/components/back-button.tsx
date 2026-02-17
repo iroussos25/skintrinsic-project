@@ -19,11 +19,11 @@ export default function BackButton({
   const getPositionClass = () => {
     switch (button.position) {
       case "bottom-left":
-        return "absolute left-8 bottom-8 z-30 flex items-center gap-4";
+        return "absolute left-4 sm:left-6 md:left-8 bottom-4 sm:bottom-6 md:bottom-8 z-30 flex items-center gap-3 sm:gap-4";
       case "bottom-right":
-        return "absolute right-8 bottom-8 z-30 flex items-center gap-4 flex-row-reverse";
+        return "absolute right-4 sm:right-6 md:right-8 bottom-4 sm:bottom-6 md:bottom-8 z-30 flex items-center gap-3 sm:gap-4 flex-row-reverse";
       default:
-        return "absolute left-8 top-1/2 z-30 flex -translate-y-1/2 items-center gap-4";
+        return "absolute left-4 sm:left-6 md:left-8 top-1/2 z-30 flex -translate-y-1/2 items-center gap-3 sm:gap-4";
     }
   };
 

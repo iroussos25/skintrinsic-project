@@ -30,7 +30,7 @@ export default function Footer({
 	}
 
 	return (
-		<footer className="px-8 pb-6 pt-2 ">
+		<footer className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-5 md:pb-6 pt-2">
 			<div className="flex items-start justify-between gap-6">
 				<div>
 					{(footerContent === "text" || footerContent === "both") && (

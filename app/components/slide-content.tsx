@@ -30,9 +30,9 @@ export default function SlideContent({
 
   const mainPaddingClass =
     textAlign === "left"
-      ? "pl-8"
+      ? "pl-4 sm:pl-6 md:pl-8"
       : textAlign === "right"
-        ? "pr-8"
+        ? "pr-4 sm:pr-6 md:pr-8"
         : "px-0";
   const textAlignClass =
     textAlign === "left"
@@ -43,14 +43,14 @@ export default function SlideContent({
 
   return (
     <main
-      className={`flex flex-1 items-center justify-center pb-8 ${mainPaddingClass}`}
+      className={`flex flex-1 items-center justify-center pb-4 sm:pb-6 md:pb-8 ${mainPaddingClass}`}
     >
       <div
         key={slide.id}
         className={`w-full ${textAlignClass}`}
       >
         {!slide.kickerPosition && slide.kicker && (
-          <p className="mb-12 text-sm uppercase tracking-[0.35em] text-neutral-600">
+          <p className="mb-8 sm:mb-10 md:mb-12 text-xs sm:text-sm uppercase tracking-[0.35em] text-neutral-600">
             {slide.kicker}
           </p>
         )}
@@ -71,8 +71,8 @@ export default function SlideContent({
             style={{
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 300,
-              fontSize: "128px",
-              lineHeight: "120px",
+              fontSize: "clamp(48px, 12vw, 128px)",
+              lineHeight: "clamp(48px, 12vw, 120px)",
               letterSpacing: "-0.07em",
               textAlign,
               color: "#1A1B1C",
@@ -120,8 +120,8 @@ export default function SlideContent({
             style={{
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 300,
-              fontSize: "128px",
-              lineHeight: "120px",
+              fontSize: "clamp(48px, 12vw, 128px)",
+              lineHeight: "clamp(48px, 12vw, 120px)",
               letterSpacing: "-0.07em",
               textAlign,
               color: "#1A1B1C",
