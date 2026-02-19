@@ -64,22 +64,6 @@ export const slides: Slide[] = [
     backButton: { text: "DISCOVER A.I." },
     nextButton: { text: "TAKE TEST", navigateTo: "002" },
     footerContent: "text",
-    decorations: {
-      left: {
-        src: "/left-rect.svg",
-        alt: "left decoration",
-        width: 301,
-        height: 301,
-        className: "absolute left-0 top-1/2 -translate-y-[calc(50%+293px)]",
-      },
-      right: {
-        src: "/right-rect.svg",
-        alt: "right decoration",
-        width: 301,
-        height: 301,
-        className: "absolute right-0 top-1/2 -translate-y-[calc(50%+293px)]",
-      },
-    },
     overlays: [
       {
         src: "/coursor.svg",

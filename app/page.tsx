@@ -65,20 +65,8 @@ export default function Home() {
         ? "right"
         : "center"
     : textAlign;
-  const introTitleStyleOverride = useMemo(
-    () =>
-      isIntroSlide
-        ? {
-            transform:
-              introHoverSide === "right"
-                ? "translateX(-40px)"
-                : introHoverSide === "left"
-                  ? "translateX(40px)"
-                  : "translateX(0)",
-          }
-        : undefined,
-    [isIntroSlide, introHoverSide]
-  );
+  // Title transform is now handled entirely in AnimatedTitle component via effectiveTextAlign
+  const introTitleStyleOverride = undefined;
   const decoratedSlide = isIntroSlide
     ? {
         ...slide,
@@ -90,6 +78,15 @@ export default function Home() {
         },
       }
     : slide;
+  const handleNextClick = () => {
+    const targetId = slide.nextButton?.navigateTo;
+    if (targetId) {
+      maybeNavigate(() => navigateToSlideId(targetId));
+      return;
+    }
+    const newIndex = Math.min(slides.length - 1, activeIndex + 1);
+    maybeNavigate(() => setActiveIndex(newIndex));
+  };
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -221,9 +218,9 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-white text-[#1A1B1C]">
-      <ScreenDecorations slide={decoratedSlide} show={decorationsLayer === "screen"} />
-
       <div className="relative z-10 flex min-h-screen w-full flex-col">
+        <ScreenDecorations slide={decoratedSlide} show={decorationsLayer === "screen"} />
+
         <Header onLogoClick={() => setActiveIndex(0)} slideId={slide.id} />
 
         <OverlayImages overlays={slide.overlays} slideId={slide.id} />
@@ -239,6 +236,8 @@ export default function Home() {
             }
             onMouseEnter={() => isIntroSlide && setIntroHoverSide("left")}
             onMouseLeave={() => isIntroSlide && setIntroHoverSide(null)}
+            showIntroDecoration={isIntroSlide}
+            hideOnSmallScreens={isIntroSlide}
           />
         )}
 
@@ -260,15 +259,9 @@ export default function Home() {
               }
               setShowNextButtonChevrons(false);
             }}
-            onClick={() => {
-              const targetId = slide.nextButton?.navigateTo;
-              if (targetId) {
-                maybeNavigate(() => navigateToSlideId(targetId));
-                return;
-              }
-              const newIndex = Math.min(slides.length - 1, activeIndex + 1);
-              maybeNavigate(() => setActiveIndex(newIndex));
-            }}
+            onClick={handleNextClick}
+            showIntroDecoration={isIntroSlide}
+            hideOnSmallScreens={isIntroSlide}
           />
         )}
 
@@ -375,6 +368,11 @@ export default function Home() {
               submitError={submitError}
               inputValue={isLocationSlide ? location : name}
               titleStyleOverride={introTitleStyleOverride}
+              introNextButton={
+                isIntroSlide && slide.nextButton && !hasFooterButtons
+                  ? { text: slide.nextButton.text, onClick: handleNextClick }
+                  : undefined
+              }
               onInputChange={(event) => {
                 const sanitized = sanitizeText(event.target.value);
                 if (isLocationSlide) {
@@ -397,6 +395,7 @@ export default function Home() {
         <Footer
           footerContent={slide.footerContent}
           showAIWrongText={showAIWrongText}
+          isIntroSlide={isIntroSlide}
           onBack={
             hasFooterButtons && slide.backButton
               ? () =>

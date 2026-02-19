@@ -11,6 +11,7 @@ type FooterProps = {
 	resetButtonText?: string;
 	confirmButtonText?: string;
 	showAIWrongText?: boolean;
+	isIntroSlide?: boolean;
 };
 
 export default function Footer({
@@ -24,13 +25,19 @@ export default function Footer({
 	resetButtonText = "RESET",
 	confirmButtonText = "CONFIRM",
 	showAIWrongText = false,
+	isIntroSlide = false,
 }: FooterProps) {
 	if (footerContent === "none") {
 		return null;
 	}
 
+	// For intro slide, use fixed positioning so it doesn't affect layout
+	const footerClass = isIntroSlide
+		? "fixed bottom-0 left-0 right-0 px-4 sm:px-6 md:px-8 pb-4 sm:pb-5 md:pb-6 pt-2 bg-white z-20"
+		: "px-4 sm:px-6 md:px-8 pb-4 sm:pb-5 md:pb-6 pt-2";
+
 	return (
-		<footer className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-5 md:pb-6 pt-2">
+		<footer className={footerClass}>
 			<div className="flex items-start justify-between gap-6">
 				<div>
 					{(footerContent === "text" || footerContent === "both") && (

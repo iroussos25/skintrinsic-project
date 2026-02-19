@@ -1,4 +1,6 @@
 import React from "react";
+import Image from "next/image";
+import { AnimatedTitle } from "./AnimatedTitle";
 import { Slide } from "@/app/data/slides";
 import SlideForm from "./slide-form";
 
@@ -13,6 +15,10 @@ type SlideContentProps = {
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   titleStyleOverride?: React.CSSProperties;
+  introNextButton?: {
+    text: string;
+    onClick: () => void;
+  };
 };
 
 export default function SlideContent({
@@ -26,16 +32,22 @@ export default function SlideContent({
   onInputChange,
   onFormSubmit,
   titleStyleOverride,
+  introNextButton,
 }: SlideContentProps) {
 
-  const mainPaddingClass =
-    textAlign === "left"
+  const isIntroSlide = slide.id === "000";
+
+  // For intro slide, keep layout constant to avoid jumps - only transform should move things
+  const mainPaddingClass = isIntroSlide
+    ? "px-0"
+    : textAlign === "left"
       ? "pl-4 sm:pl-6 md:pl-8"
       : textAlign === "right"
         ? "pr-4 sm:pr-6 md:pr-8"
         : "px-0";
-  const textAlignClass =
-    textAlign === "left"
+  const textAlignClass = isIntroSlide
+    ? "text-center"
+    : textAlign === "left"
       ? "text-left"
       : textAlign === "right"
         ? "text-right"
@@ -77,55 +89,41 @@ export default function SlideContent({
               {slide.title}
             </h1>
           </>
-        ) : slide.id === "000" && titleStyleOverride ? (
-          <h1
-            className={
-              textAlign === "left"
-                ? "max-w-5xl leading-none"
-                : textAlign === "right"
-                  ? "ml-auto max-w-5xl leading-none"
-                  : "mx-auto max-w-5xl leading-none"
-            }
-            style={{
-              fontFamily: '"Poppins", sans-serif',
-              fontWeight: 300,
-              fontSize: "clamp(48px, 12vw, 128px)",
-              lineHeight: "clamp(48px, 12vw, 120px)",
-              letterSpacing: "-0.07em",
-              textAlign,
-              color: "#1A1B1C",
-              display: "inline-block",
-            }}
-          >
-            {slide.title?.split(" ").map((word, idx) => {
-              const currentTransform = titleStyleOverride?.transform;
-              const isAnimating = currentTransform !== "translateX(0)";
-              const animationClass = 
-                currentTransform === "translateX(40px)"
-                  ? `intro-title-word-${idx}-left`
-                  : currentTransform === "translateX(-40px)"
-                    ? `intro-title-word-${idx}-right`
-                    : "";
-
-              return (
-                <span
-                  key={word}
-                  className={animationClass}
-                  style={{
-                    display: "inline-block",
-                    marginRight: idx === 0 ? "0.25em" : 0,
-                    transitionProperty: isAnimating ? "none" : "transform",
-                    transitionDuration: isAnimating ? "0s" : "1s",
-                    transitionTimingFunction: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                    transitionDelay: idx * 200 + "ms",
-                    transform: !isAnimating ? currentTransform : undefined,
-                  }}
+        ) : isIntroSlide ? (
+          <>
+            <div className="flex flex-col items-center gap-8 sm:hidden" style={{ rowGap: "calc(2rem + 50px)" }}>
+              <h1
+                className="text-[#1A1B1C]"
+                style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontWeight: 300,
+                  fontSize: "clamp(36px, 10vw, 56px)",
+                  lineHeight: "clamp(36px, 10vw, 56px)",
+                  letterSpacing: "-0.07em",
+                  textAlign: "center",
+                }}
+              >
+                {slide.title}
+              </h1>
+              {introNextButton && (
+                <button
+                  onClick={introNextButton.onClick}
+                  className="flex items-center gap-3 transition hover:opacity-80"
                 >
-                  {word}
-                </span>
-              );
-            })}
-          </h1>
+                  <span
+                    className="font-semibold text-[#1A1B1C]"
+                    style={{ fontSize: "clamp(12px, 3vw, 14px)" }}
+                  >
+                    {introNextButton.text}
+                  </span>
+                  <Image src="/next-slide.svg" alt="next" width={44} height={44} />
+                </button>
+              )}
+            </div>
+            <div className="hidden sm:block">
+              <AnimatedTitle text={slide.title || ""} align={textAlign} styleOverride={titleStyleOverride} />
+            </div>
+          </>
         ) : (
           <h1
             className={

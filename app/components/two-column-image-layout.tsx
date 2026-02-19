@@ -56,7 +56,7 @@ export default function TwoColumnImageLayout({
   const isRightDimmed = hoveredSide === "left";
 
   return (
-    <div className="relative flex flex-1 items-center justify-center gap-0">
+    <div className="relative flex flex-col min-[450px]:flex-row flex-1 items-center justify-center gap-0">
       <ConfirmModal
         isOpen={showCameraDialog}
         title="ALLOW A.I. TO ACCESS YOUR CAMERA?"
@@ -110,15 +110,15 @@ export default function TwoColumnImageLayout({
         alt="select way"
         width={143}
         height={122}
-        className="pointer-events-none absolute left-1/2 top-[75%] -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none hidden min-[450px]:block absolute left-1/2 top-[75%] -translate-x-1/2 -translate-y-1/2"
       />
       {/* Left Half */}
       <div
-        className="relative flex w-full sm:w-1/2 items-center justify-center flex-col sm:flex-row"
+        className="relative flex w-full min-[450px]:w-1/2 items-center justify-center flex-col min-[450px]:flex-row"
         onMouseEnter={() => setHoveredSide("left")}
         onMouseLeave={() => setHoveredSide(null)}
       >
-        <div className="relative w-full h-full flex flex-col sm:flex-row items-center justify-center">
+        <div className="relative w-full h-full flex flex-col min-[450px]:flex-row items-center justify-center">
           {/* Background rombus decoration - hidden on mobile */}
           <Image
             src="/rombusescenter.svg"
@@ -158,11 +158,11 @@ export default function TwoColumnImageLayout({
 
       {/* Right Half */}
       <div
-        className="relative flex w-full sm:w-1/2 items-center justify-center flex-col sm:flex-row"
+        className="relative flex w-full min-[450px]:w-1/2 items-center justify-center flex-col min-[450px]:flex-row"
         onMouseEnter={() => setHoveredSide("right")}
         onMouseLeave={() => setHoveredSide(null)}
       >
-        <div className="relative w-full h-full flex flex-col sm:flex-row items-center justify-center">
+        <div className="relative w-full h-full flex flex-col min-[450px]:flex-row items-center justify-center">
           {/* Background rombus decoration - hidden on mobile */}
           <Image
             src="/rombusescenter.svg"
