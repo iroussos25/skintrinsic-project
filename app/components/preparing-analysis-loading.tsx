@@ -19,10 +19,10 @@ export default function PreparingAnalysisLoading({
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    // Auto-close after 5 seconds (or adjust as needed)
+    // Auto-close after 2 milliseconds (or adjust as needed)
     const timer = setTimeout(() => {
       onComplete();
-    }, 5000);
+    }, 2);
 
     return () => {
       document.body.style.overflow = originalOverflow;
