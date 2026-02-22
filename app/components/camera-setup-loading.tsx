@@ -19,10 +19,10 @@ export default function CameraSetupLoading({
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    // Auto-close after 2 milliseconds
+    // Auto-close after 500 milliseconds (or adjust as needed)
     const timer = setTimeout(() => {
       onComplete();
-    }, 2);
+    }, 500);
 
     return () => {
       document.body.style.overflow = originalOverflow;
