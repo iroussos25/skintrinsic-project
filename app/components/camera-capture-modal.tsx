@@ -374,7 +374,7 @@ export default function CameraCaptureModal({
       {/* Header - Top Left */}
       <div className="absolute left-8 top-8">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white">
-          SKINTRINSIC <span className="font-normal">[ ANALYSIS ]</span>
+          SKINSTRIC <span className="font-normal">[ ANALYSIS ]</span>
         </p>
       </div>
 

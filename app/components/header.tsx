@@ -15,7 +15,7 @@ export default function Header({ onLogoClick, slideId }: HeaderProps) {
       >
         <div>
           <p className="text-xs uppercase tracking-[-0.02em] text-neutral-600">
-            <b>Skintrinsic</b>  {headerText}
+            <b>Skinstric</b>  {headerText}
           </p>
         </div>
       </button>

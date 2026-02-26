@@ -42,7 +42,7 @@ export default function Footer({
 				<div>
 					{(footerContent === "text" || footerContent === "both") && (
 						<div className="h-18 w-79 text-xs uppercase tracking-[0.2em] text-neutral-500">
-							<span>SKINTRINSIC DEVELOPED AN A.I. THAT CREATES A HIGHLY-PERSONALISED ROUTINE TAILORED TO WHAT YOUR SKIN NEEDS.</span>
+							<span>SKINSTRIC DEVELOPED AN A.I. THAT CREATES A HIGHLY-PERSONALISED ROUTINE TAILORED TO WHAT YOUR SKIN NEEDS.</span>
 						</div>
 					)}
 					{(footerContent === "button" || footerContent === "both") && onBack && (
